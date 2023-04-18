@@ -2,34 +2,30 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
+      content="script-src 'self' 'unsafe-inline';"
     />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
   </head>
+  <div class="page_header">
+    <div class="header_left">
+      <h1>Noduro Open Beta 1.0.0</h1>
+    </div>
+    <div class="header_right">
+      <button class = "header_nav_button"><a class = "header_navigator padding" href = index.html>Home</a></button>
+      <button class = "header_nav_button"><a class = "header_navigator padding" href = technology/tech.html>Technology</a></button>
+      <button class = "header_nav_button"><a class = "header_navigator padding" href = settings/settings.html>Settings</a></button>
+      <button class = "header_nav_button"><a class = "header_navigator padding" href = login/login.html>Login</a></button>
+
+    </div>
+  </div>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <h1>Web Bluetooth API</h1>
+    <div class="filler"><h1></h1></div>
 
-    <button id="clickme">Test Bluetooth</button>
-
-    <p>Currently selected bluetooth device: <strong id="device-name""></strong></p>
-
-    <script src="./renderer.js"></script>
-    <p id="info"></p>
-    <p>Current theme source: <strong id="theme-source">System</strong></p>
-
-    <button id="toggle-dark-mode">Toggle Dark Mode</button>
+    <button id="toggle-mode">System</button>
     <button id="reset-to-system">Reset to System Theme</button>
 
     <script src="renderer.js"></script>
   </body>
-  <script src="./renderer.js"></script>
 </html>

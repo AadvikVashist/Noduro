@@ -1,11 +1,26 @@
-const information = document.getElementById('info');
-information.innerText = `This app is using Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), and Electron (v${versions.electron()})`;
-document.getElementById('toggle-dark-mode').addEventListener('click', async () => {
-    const isDarkMode = await window.darkMode.toggle()
-    document.getElementById('theme-source').innerHTML = isDarkMode ? 'Dark' : 'Light'
-  })
-  
+//Actually change the text of the button to reflect the current Dark/Light/System mode
+
+
+document.getElementById('toggle-mode').addEventListener('click', async () => {
+  const isDarkMode = await window.darkMode.toggle()
+  document.getElementById('toggle-mode').innerHTML = isDarkMode ? 'Dark' : 'Light'
+})
+
 document.getElementById('reset-to-system').addEventListener('click', async () => {
-    await window.darkMode.system()
-    document.getElementById('theme-source').innerHTML = 'System'
-  })
+  await window.darkMode.system()
+  document.getElementById('toggle-mode').innerHTML = 'System'
+})
+
+// window.onscroll = function() {myFunction()};
+// // Get the header
+// var header = document.getElementById("page_header");
+// // Get the offset position of the navbar
+// var sticky = header.offsetTop;
+// // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+// function myFunction() {
+//   if (window.pageYOffset > sticky) {
+//     header.classList.add("sticky");
+//   } else {
+//     header.classList.remove("sticky");
+//   }
+// }

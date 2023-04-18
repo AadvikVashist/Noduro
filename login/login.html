@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google-signin-client_id" content="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com">
+    <link rel="stylesheet" type="text/css" href="./login.css" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline';"
+    />
+  </head>
+  <body>
+  <div class="page_header">
+    <div class="header_left">
+      <h1>Noduro Open Beta 1.0.0</h1>
+    </div>
+    <div class="header_right">
+      <button class = "header_nav_button">
+        <a class = "header_navigator padding" href = ../index.html>Home</a>
+      </button>
+      <button class = "header_nav_button">
+        <a class = "header_navigator padding" href = ../technology/tech.html>Technology</a>
+      </button>
+      <button class = "header_nav_button">
+        <a class = "header_navigator padding" href = ../settings/settings.html>Settings</a>
+      </button>
+      <button class = "header_nav_button">
+        <a class = "header_navigator padding" href = login.html>Login</a>
+      </button>
+
+    </div>
+  </div>
+    <div class="filler"><h1></h1></div>
+    <div class ="main_div">  
+    <div class = "signin_box">
+      <h1>Login</h1>
+      <div class = "login_box">
+        <input class="input100" type="text" name="username" placeholder="Username or Email" control-id="ControlID-1">
+        <input class="input100" type="password" name="username" placeholder="Password" id = "password" control-id="ControlID-1">
+        <input class = "smaller_font" type="checkbox" onclick="myFunction()"> Show Password
+        <div class="col-md-6">
+          <input id="password-field" type="password" class="form-control" name="password" value="secret">
+          <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+      </div>
+    </div>
+    </div>
+    <script src="./login.js"></script>
+  </body>
+  
+</html>

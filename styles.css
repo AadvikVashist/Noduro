@@ -1,7 +1,126 @@
-@media (prefers-color-scheme: dark) {
-  body { background: #333; color: white; }
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+/* Base colors
+Tan: #DCD7CB
+Lighter Tan: #C6BEAD
+Gray: #38383B
+Light Gray: #DFE0E1
+*/
+/* Base similarities */
+.page_header,
+button,
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+button {
+  border: none;
+  border-radius: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  text-align: center;
 }
 
+.page_header {
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+}
+.header_left{
+  text-align: left;
+  float: left;
+  width: 50%;
+  height: 100%;
+  vertical-align: middle;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  line-height: 1;
+}
+.header_right{
+  text-align: right;
+  position:relative;
+  width: 50%;
+  height: 100%;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: flex-end;
+  margin-right: 1rem;
+}
+
+.header_nav_button{
+  display: inline;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+
+}
+.header_navigator{
+  font-family: "Poppins", sans-serif;
+  text-decoration: none;
+  text-decoration: bold;
+  font-size: 18px;
+  text-align: center;
+  /* background: #DFE0E1; */
+  /* border-radius: 0.5rem; */
+
+}
+
+.filler {
+  height: 50px;
+}
+.padding { 
+  padding-left : 0.5rem;
+  padding-right : 0.5rem;}
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+/* .sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+} */
+/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+/* .sticky + .content {
+  padding-top: 100px;
+} */
+
+/* Themes */
 @media (prefers-color-scheme: light) {
-  body { background: #ddd; color: black; }
+  .header_navigator{
+    color:#38383b;
+  }
+  .header_nav_button,body {
+    background: #c6bead;
+    color: #38383b;
+  }
+  button {
+    background: #38383b;
+    color: #c6bead;
+  }
+  .page_header {
+    background: #38383b;
+    color: #c6bead;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .header_navigator{
+    color:#c6bead;
+  }
+  .header_nav_button,body {
+    background: #38383b;
+    color: #c6bead;
+  }
+  button {
+    background: #c6bead;
+    color: #38383b;
+  }
+  .page_header {
+    background: #c6bead;
+    color: #38383b;
+  }
 }
