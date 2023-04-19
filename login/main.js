@@ -1,4 +1,21 @@
 // const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
+const togglePassword = document.querySelector("#togglePassword");
+const password = document.querySelector("#password");
+
+togglePassword.addEventListener("click", function () {
+	// toggle the type attribute
+	const type = password.getAttribute("type") === "password" ? "text" : "password";
+	password.setAttribute("type", type);
+	// toggle the icon
+	this.classList.toggle("bi-eye");
+});
+
+// prevent form submit
+const form = document.querySelector("form");
+form.addEventListener('submit',function(e){
+	e.preventDefault();
+});
+
 
 let firstnameVal = localStorage.getItem('firstname');
 let lastnameVal = localStorage.getItem('lastname');
@@ -28,21 +45,4 @@ document.getElementById('buttons').addEventListener('click', async () => {
     localStorage.setItem('displayname', displayname.value);
     localStorage.setItem('darkmode', darkmode.value);
 })
-function myFunction() {
-var x = document.getElementById("password");
-if (x.type === "password") {
-  x.type = "text";
-} else {
-  x.type = "password";
-}
-}
-$(".toggle-password").click(function() {
 
-    $(this).toggleClass("fa-eye fa-eye-slash");
-    var input = $($(this).attr("toggle"));
-    if (input.attr("type") == "password") {
-      input.attr("type", "text");
-    } else {
-      input.attr("type", "password");
-    }
-  });
