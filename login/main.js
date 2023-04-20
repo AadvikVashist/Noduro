@@ -12,8 +12,13 @@ togglePassword.addEventListener("click", function () {
 
 // prevent form submit
 const form = document.querySelector("form");
-form.addEventListener('submit',function(e){
+form.addEventListener('sign_in',function(e){
 	e.preventDefault();
+});
+
+password.on('keypress', function(e) {
+        if (e.which == 32)
+            return false;
 });
 
 

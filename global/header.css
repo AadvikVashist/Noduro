@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Anuphan&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@media (prefers-color-scheme: light) {
+  :root{
+    --header:#38383b;
+    --header_button_bg: #c6bead;
+    --header_nav_links: #38383b;
+    --header_button_hover: #ece3d0;
+    --header_text: #c6bead;
+  }
+}
+  @media (prefers-color-scheme: dark)
+{
+  :root{
+  --header:#c6bead;
+  --header_button_bg: #545456;
+  --header_nav_links: #dbd4c5;
+  --header_button_hover: #1c1c1d;;
+  --header_text: #38383b;
+}
+}
+
+.page_header {
+    background: var(--header);
+    color: var(--header_nav_links);
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-top: 0.2rem;
+    padding-left: 1rem;
+    
+    padding-bottom: 0.2rem;
+  }
+  .header_left {
+    text-align: left;
+    float: left;
+    width: 50%;
+    height: 100%;
+    vertical-align: middle;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--header_text);
+  }
+  .header_right {
+    text-align: right;
+    position: relative;
+    width: 50%;
+    height: 100%;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: flex-end;
+    margin-right: 1rem;
+    
+  }
+  .header_nav_links {
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+    text-decoration: bold;
+    font-size: 18px;
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    color: var(--header_nav_text);
+  }
+  .filler {
+    height: 50px;
+  }
+  .header_nav_button{
+    display: inline;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+    background: var(--header_button_bg);
+    color: var(--header_nav_links);
+  }
+  .header_nav_button:hover{
+    background: var(--header_button_hover);
+  }

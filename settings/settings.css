@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins");
 
-.page_header,
 button,
 body {
   font-family: "Poppins", sans-serif;
@@ -17,61 +16,6 @@ button {
   padding-bottom: 0.3rem;
   text-align: center;
 }
-
-.page_header {
-  height: 50px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  
-}
-.header_left{
-  text-align: left;
-  float: left;
-  width: 50%;
-  height: 100%;
-  vertical-align: middle;
-  font-family: "Poppins", sans-serif;
-  font-size: 12px;
-  line-height: 1;
-}
-.header_right{
-  text-align: right;
-  position:relative;
-  width: 50%;
-  height: 100%;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  justify-content: flex-end;
-  margin-right: 1rem;
-}
-
-.header_nav_button{
-  display: inline;
-  border-radius: 0.5rem;
-  margin-right: 1rem;
-
-}
-.header_navigator{
-  font-family: "Poppins", sans-serif;
-  text-decoration: none;
-  text-decoration: bold;
-  font-size: 18px;
-  text-align: center;
-  /* background: #DFE0E1; */
-  /* border-radius: 0.5rem; */
-
-}
-
-.filler {
-  height: 40px;
-}
-.padding { 
-  padding-left : 0.5rem;
-  padding-right : 0.5rem;}
 
 
 .entry{
@@ -90,52 +34,36 @@ button {
 
 /* Themes */
 @media (prefers-color-scheme: light) {
-  .header_navigator{
-    color:#38383b;
-  }
-  .header_nav_button,body,option {
-    background: #c6bead;
-    color: #38383b;
-  }
-  button {
+
+  /* button {
     background: #38383b;
     color: #c6bead;
   }
   button :hover{
     background: #57575c;
     color: #c6bead;
-  } /*
+  }
   button:active{
     background: #867550;
     color: #c6bead;
   } */
-  .page_header {
-    background: #38383b;
-    color: #c6bead;
-  }
 }
 @media (prefers-color-scheme: dark) {
-  .header_navigator{
-    color:#c6bead;
-  }
-  .header_nav_button,body,option {
+  body,option {
     background: #38383b;
     color: #c6bead;
   }
-  button {
+  /* button {
     background: #c6bead;
     color: #38383b;
   }
   button:hover{
     background: #ada28a;
     color: #c6bead;
-  }
+  } */
   /* button:active{
     background: #867550;
     color: #c6bead;
   } */
-  .page_header {
-    background: #c6bead;
-    color: #38383b;
-  }
+
 }
