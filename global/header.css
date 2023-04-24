@@ -12,6 +12,7 @@
 }
   @media (prefers-color-scheme: dark)
 {
+
   :root{
   --header:#c6bead;
   --header_button_bg: #545456;
@@ -36,6 +37,7 @@
     padding-left: 1rem;
     border: none;
     padding-bottom: 0.2rem;
+    
   }
   .header_left {
     text-align: left;
@@ -86,6 +88,13 @@
     color: var(--header_nav_links);
     -webkit-transition: color 0.5s background-color 0.5s;
     transition: background-color 0.5s ease, color 0.5s ease;  
+    border: none;
+    border-radius: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    text-align: center;
   }
   .header_nav_button:hover{
     background: var(--header_button_hover);
