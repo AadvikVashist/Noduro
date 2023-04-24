@@ -12,7 +12,8 @@
     "electron": "^23.2.4"
   },
   "dependencies": {
-    "electron-json-storage": "^4.6.0"
+    "electron-json-storage": "^4.6.0",
+    "google-auth-library": "^8.7.0"
   },
   "description": ""
 }

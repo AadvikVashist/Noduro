@@ -5,9 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="google-signin-client_id"
     content="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com">
-  <link rel="stylesheet" type="text/css" href="./login.css" />
+  <link rel="stylesheet" type="text/css" href="./sign_up.css" />
   <link rel="stylesheet" href="../global/icon/icons.css" />
   <link rel="stylesheet" href="../global/header.css" />
+
 
   <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
 </head>
@@ -34,29 +35,31 @@
   </div>
   <div class="main_div">
     <div class="signin_box">
-      <h1>Sign in to Noduro</h1>
-
+      <h1>Sign up for Noduro</h1>
       <div class="login_box">
-
         <form method="post">
           <p>
             <label for="email">Email </label>
-            <input class="input_box" type="email" name="email" id="email" placeholder="Email Address" required>
+            <input class="input_box" type="email" name="email" id="email" placeholder="Email Address">
           </p>
           <p>
             <label for="password">Password </label>
-            <input class="input_box" type="password" name="password" id="password" placeholder="Password" required />
+            <input class="input_box" type="password" name="password" id="password" placeholder="Password" />
             <i class="bi bi-eye-slash" id="togglePassword"></i>
-            <a class="forgot_password" href="#">Forgot Password?</a>
+          </p>
+          <p>
+            <label for="password">Confirm Password </label>
+            <input class="input_box" type="password" name="confirm_password" id="confirm_password"
+              placeholder="Confirm Password" />
+            <i class="bi bi-eye-slash" id="toggleConfirmPassword"></i>
           </p>
           <div class="buttons">
-
             <div class="button_div">
-              <button class="sign_up_box" type="button" id="sign_up"
-                onclick="window.location.href='../sign_up/sign_up.html';">Sign up </button>
+              <button class="sign_in_box" type="button" id="sign_in"
+                onclick="window.location.href='../login/login.html';">Sign In</button>
             </div>
             <div class="button_div">
-              <button class="sign_in_box" type="submit" id="sign_in">Sign in</button>
+              <button class="sign_up_box" type="submit" id="submit">Submit</button>
             </div>
           </div>
 
@@ -64,15 +67,20 @@
         <div>
           <h1 class="line">OR</h1>
         </div>
-
+        <div id="g_id_onload" data-client_id="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com"
+          data-context="signup" data-ux_mode="popup" data-login_uri="noduro:///sign_up/sign_up.html" data-nonce=""
+          data-auto_select="true" data-itp_support="true">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="signup_with"
+          data-size="large" data-logo_alignment="left">
+        </div>
       </div>
     </div>
-    <script src="./login.js"></script>
+
+    <script src="./sign_up.js"></script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-
 </body>
 
 </html>

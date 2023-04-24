@@ -1,15 +1,26 @@
 //Actually change the text of the button to reflect the current Dark/Light/System mode
 
+let firstnameVal = localStorage.getItem('firstname');
 
-document.getElementById('toggle-mode').addEventListener('click', async () => {
-  const isDarkMode = await window.darkMode.toggle()
-  document.getElementById('toggle-mode').innerHTML = isDarkMode ? 'Dark' : 'Light'
-})
+if (firstnameVal != null) {
+    document.getElementById('welcome').innerHTML = "Welcome back, "  + firstnameVal;
+    if (document.getElementById('sign_in') != null) {
+    document.getElementById('sign_in').remove();
+    }
+}
 
-document.getElementById('reset-to-system').addEventListener('click', async () => {
-  await window.darkMode.system()
-  document.getElementById('toggle-mode').innerHTML = 'System'
-})
+
+
+
+// document.getElementById('toggle-mode').addEventListener('click', async () => {
+//   const isDarkMode = await window.darkMode.toggle()
+//   document.getElementById('toggle-mode').innerHTML = isDarkMode ? 'Dark' : 'Light'
+// })
+
+// document.getElementById('reset-to-system').addEventListener('click', async () => {
+//   await window.darkMode.system()
+//   document.getElementById('toggle-mode').innerHTML = 'System'
+// })
 
 // window.onscroll = function() {myFunction()};
 // // Get the header
