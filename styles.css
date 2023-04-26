@@ -3,6 +3,7 @@
   :root{
   --background: #f5e9d0;
   --main_div_text_color: #000000;
+  --main_div_link_color: rgba(57, 57, 57,1);
   --scrolling : linear-gradient(0deg, #aaa08a, #aa9c7c );
 
   }
@@ -11,6 +12,7 @@
   :root{
     --background: #2f2c26;
     --main_div_text_color: #f5e9d0;
+    --main_div_link_color: #d7d7d7;
     --scrolling : linear-gradient(0deg, #2f2c26, #665f4e);
 
     }
@@ -18,14 +20,17 @@
 }
 body {
   margin: 0;
+  background: var(--background);
 }
 
 
 .welcome_div {
-  display:flex;
+  display: flex;
   width:100%;
+  position: relative;
   flex-flow: column nowrap;
   justify-content: center;
+  
   /* left padding 2rem, right padding 2rem, bottom padding 2rem, top padding 0rem */
   padding-left: 2rem;
   padding-right: 2rem;
@@ -34,10 +39,27 @@ body {
   font-size: 60px;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  height:100%;
+  height: 100vh;
   color: var(--main_div_text_color);
   background-color: var(--background);
-  margin-top: 0;
+  line-height: 1.2;
+}
+.welcome_div_items{
+  margin: 0rem;
+  padding: 0rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  transition: all 1s;
+}
+
+.sign_in{
+  color: var(--main_div_link_color);
+  transition: all linear 300ms;
+  text-decoration: underline 0.3rem rgba(0,0,0,0);
+
+}
+.sign_in:hover{
+  text-decoration-color: var(--main_div_link_color);
 }
 
 .recommended{

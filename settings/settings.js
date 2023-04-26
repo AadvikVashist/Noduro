@@ -32,10 +32,29 @@ document.getElementById("buttons").addEventListener("click", async () => {
     const lastname = document.getElementById("lastname");
     const displayname = document.getElementById("displayname");
     const darkmode = document.getElementById("darkmode");
-    localStorage.setItem("firstname", firstname.value);
-    localStorage.setItem("lastname", lastname.value);
-    localStorage.setItem("displayname", displayname.value);
+    if (firstname.value.length == 0) {
+        localStorage.setItem("firstname", "");
+    }
+    else{
+        localStorage.setItem("firstname", firstname.value);
+    }
+    if (lastname.value.length == 0) {
+        localStorage.setItem("lastname", "");
+    }
+    else{
+        localStorage.setItem("lastname", lastname.value);
+    }
+
+    if (displayname.value.length == 0) {
+        localStorage.setItem("displayname", "");
+    }
+    else{
+        localStorage.setItem("displayname", displayname.value);
+    }
+
     localStorage.setItem("darkmode", darkmode.value);
+
+
     if (darkmode.value == "Dark") {
         await window.darkMode.dark();
     } else if (darkmode.value == "Light") {

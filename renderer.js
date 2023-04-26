@@ -2,19 +2,83 @@
 
 let firstnameVal = localStorage.getItem("firstname");
 
-if (firstnameVal != null) {
+if (firstnameVal.length == 0) {
+    document.getElementById("welcome").innerHTML = "Welcome to Noduro";
+    document.getElementById("sign_in").innerHTML =
+        "<a class = 'sign_in' href= './sign_up/sign_up.html'> Sign up </a> to Noduro to get started";
+} else {
     document.getElementById("welcome").innerHTML =
         "Welcome back, " + firstnameVal;
-    if (document.getElementById("sign_in") != null) {
-        document.getElementById("sign_in").remove();
+    document.getElementById("sign_in").innerHTML =
+        "<a class = 'sign_in' href= './login/login.html'> Sign In </a> to Noduro";
+}
+
+// window.onload = function(a) {
+// if(localStorage.getItem("visitedhome").includes("1")) {
+// document.getElementById("paged_header").style = "transition: none";
+// document.getElementById("paged_header").classList.remove("filler_header");
+// document.getElementById("paged_header").classList.add("page_header");
+// }
+// };
+
+// function reset_scroll(){
+//     console.log("reset_called")
+//     localStorage.setItem("scrolled_in_index", false);
+// }
+const header = document.querySelector(".page_header");
+
+
+window.onload = function (e) {
+    console.log("onload called");
+    if(localStorage.getItem("scrolled_in_index").includes("true")){
+        header.classList.remove("page_header_invis");
+        header.classList.add("page_header");
+
+    }
+    else{
+        header.classList.remove("page_header");
+        header.classList.add("page_header_invis");
     }
 }
-else{
-    document.getElementById("welcome").innerHTML = "Welcome to Noduro";
+window.onscroll = function (e){
+    localStorage.removeItem("hasScrolled");
+    console.log("scroll called")
+    if (localStorage.getItem("scrolled_in_index").includes("false")) {
+        header.classList.remove("page_header_invis");
+        header.classList.add("page_header");
+        localStorage.setItem("scrolled_in_index", "true");
+        console.log("first scroll")
+    }
+
 }
+// Get the header element
 
+// // Add an event listener to the window object to detect scrolling
+// window.addEventListener("scroll", () => {
+//     // Check if the user has scrolled past the top of the page
+//     if (window.scrollY > 0) {
+//         // Add the "visible" class to the header element
+//         header.classList.remove("invis");
 
+//         // Store a flag in localStorage to indicate that the user has scrolled
+//         localStorage.setItem("hasScrolled", true);
+//     } else {
+//         // Remove the "visible" class from the header element
+//         header.classList.add("invis");
 
+//         // Remove the flag from localStorage
+//         localStorage.removeItem("hasScrolled");
+//     }
+// });
+
+// // Check if the user has scrolled past the top of the page on page load
+// if (window.scrollY > 0 || localStorage.getItem("hasScrolled")) {
+//     // Add the "visible" class to the header element
+//     header.classList.remove("invis");
+
+//     // Store a flag in localStorage to indicate that the user has scrolled
+//     localStorage.setItem("hasScrolled", true);
+// }
 
 
 function addElement(image_source, name) {
@@ -32,31 +96,3 @@ function addElement(image_source, name) {
     // add list element
     list.appendChild(entry);
 }
-// var firstname = document.getElementById('firstname').value;
-// var entry = document.createElement('li');
-// entry.appendChild(document.createTextNode(firstname));
-// list.appendChild(entry);
-
-// document.getElementById('toggle-mode').addEventListener('click', async () => {
-//   const isDarkMode = await window.darkMode.toggle()
-//   document.getElementById('toggle-mode').innerHTML = isDarkMode ? 'Dark' : 'Light'
-// })
-
-// document.getElementById('reset-to-system').addEventListener('click', async () => {
-//   await window.darkMode.system()
-//   document.getElementById('toggle-mode').innerHTML = 'System'
-// })
-
-// window.onscroll = function() {myFunction()};
-// // Get the header
-// var header = document.getElementById("page_header");
-// // Get the offset position of the navbar
-// var sticky = header.offsetTop;
-// // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
-// function myFunction() {
-//   if (window.pageYOffset > sticky) {
-//     header.classList.add("sticky");
-//   } else {
-//     header.classList.remove("sticky");
-//   }
-// }

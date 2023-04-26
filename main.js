@@ -21,11 +21,12 @@ const createWindow = () => {
         nativeWindowOpen: true
       },
   })
+
+
   mainWindow.webContents.openDevTools()
+  mainWindow.loadFile('index.html');
 
-
-
-  mainWindow.loadFile('index.html')
+    // mainWindow.webContents.send('reset_scroll');
   //Change the css style based on the system preference
   ipcMain.handle('dark-mode:toggle', () => {
     if (nativeTheme.shouldUseDarkColors) {
@@ -76,7 +77,8 @@ if (!gotTheLock) {
         createWindow()
       }
     })
-    
+
+
   })
 }
 

@@ -25,7 +25,8 @@ for (var i in files) {
     //     console.log(ap);
     // }
 }
-console.log(files);
-console.log(lessons);
 localStorage.setItem("files",JSON.stringify(files));
 localStorage.setItem("lessons", JSON.stringify(lessons));
+const d = new Date();
+let time = d.getTime();
+console.log(time);

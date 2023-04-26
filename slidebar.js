@@ -1,12 +1,12 @@
 var files = JSON.parse(localStorage.getItem("files"));
 var lessons = JSON.parse(localStorage.getItem("lessons"));
 
+
 for (index = 0; index < files.length; index++) {
     add_element(lessons[index], files[index]);
 }
 
 function add_element(image_source, name) {
-    console.log(image_source);
     var list = document.getElementById("scrolling-div");
     var entry = document.createElement("div");
     entry.setAttribute("class", "card");
