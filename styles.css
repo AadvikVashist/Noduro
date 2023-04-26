@@ -2,11 +2,17 @@
 @media (prefers-color-scheme: light) {
   :root{
   --background: #f5e9d0;
+  --main_div_text_color: #000000;
+  --scrolling : linear-gradient(0deg, #aaa08a, #aa9c7c );
+
   }
 }
 @media (prefers-color-scheme: dark) {
   :root{
     --background: #2f2c26;
+    --main_div_text_color: #f5e9d0;
+    --scrolling : linear-gradient(0deg, #2f2c26, #665f4e);
+
     }
   
 }
@@ -21,10 +27,55 @@ body {
   flex-flow: column nowrap;
   justify-content: center;
   /* left padding 2rem, right padding 2rem, bottom padding 2rem, top padding 0rem */
-  padding: 0rem 2rem 2rem 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 10rem;
   font-size: 60px;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  height:fit-content;
+  height:100%;
+  color: var(--main_div_text_color);
   background-color: var(--background);
+  margin-top: 0;
 }
+
+.recommended{
+  margin-top: 0;
+  text-transform: capitalize;
+  background: var(--scrolling);
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight:600;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.scrolling-div{
+  background: none;
+  background-attachment: scroll;
+  font-size: 16px;
+  width: 100%;
+
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+
+}
+.scrolling-div,  .card  {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  
+}
+.card {
+  display: inline-block;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  max-height: 15rem;
+}
+.image{
+  border-radius: 1rem;
+}
+

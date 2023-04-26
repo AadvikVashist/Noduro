@@ -31,7 +31,7 @@
     left: 0;
     width: 100%;
     font-family: "Poppins", sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.5;
     padding-top: 0.2rem;
     padding-left: 1rem;
@@ -42,13 +42,13 @@
   .header_left {
     text-align: left;
     float: left;
-    width: 50%;
+    width: auto;
     height: 100%;
     vertical-align: middle;
     font-family: "Poppins", sans-serif;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 500;
-    line-height: 1;
+    line-height: 0;
     color: var(--header_text);
   }
   .header_right {
@@ -67,16 +67,16 @@
     font-family: "Poppins", sans-serif;
     text-decoration: none;
     text-decoration: bold;
-    font-size: 18px;
+    font-size: 24px;
     text-align: center;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     color: var(--header_nav_text);
   }
   .filler {
-    position:absolute;
+    position:relative;
     top:0;
-    height: 50px;
+    height: 60px;
   }
   .header_nav_button{
     display: inline;

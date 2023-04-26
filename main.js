@@ -19,7 +19,7 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: true,
         nativeWindowOpen: true
-      }
+      },
   })
   mainWindow.webContents.openDevTools()
 

@@ -1,16 +1,41 @@
 //Actually change the text of the button to reflect the current Dark/Light/System mode
 
-let firstnameVal = localStorage.getItem('firstname');
+let firstnameVal = localStorage.getItem("firstname");
 
 if (firstnameVal != null) {
-    document.getElementById('welcome').innerHTML = "Welcome back, "  + firstnameVal;
-    if (document.getElementById('sign_in') != null) {
-    document.getElementById('sign_in').remove();
+    document.getElementById("welcome").innerHTML =
+        "Welcome back, " + firstnameVal;
+    if (document.getElementById("sign_in") != null) {
+        document.getElementById("sign_in").remove();
     }
+}
+else{
+    document.getElementById("welcome").innerHTML = "Welcome to Noduro";
 }
 
 
 
+
+
+function addElement(image_source, name) {
+    var list = document.getElementById("thumbnail_list");
+    var entry = document.createElement("li");
+    // create a new div element
+    var elem = document.createElement(name);
+    elem.setAttribute("src", image_source);
+    // elem.setAttribute("height", "768");
+    // elem.setAttribute("width", "1024");
+    // elem.setAttribute("alt", "Flower");
+    document.getElementById("placehere");
+
+    entry.appendChild(elem);
+    // add list element
+    list.appendChild(entry);
+}
+// var firstname = document.getElementById('firstname').value;
+// var entry = document.createElement('li');
+// entry.appendChild(document.createTextNode(firstname));
+// list.appendChild(entry);
 
 // document.getElementById('toggle-mode').addEventListener('click', async () => {
 //   const isDarkMode = await window.darkMode.toggle()
