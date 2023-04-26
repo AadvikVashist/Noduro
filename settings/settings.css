@@ -8,6 +8,27 @@ body {
   text-decoration: bold;
 }
 
+input {
+  width: 15rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  border-width: 0.01rem;
+}
+
+input::placeholder {
+  color: lightslategray;
+  opacity: 0.5;
+}
+
+h1 {
+  margin: 0;
+}
+
+
+.input_label {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
 
 .entry{
   font-family: "Poppins", sans-serif;
@@ -16,11 +37,24 @@ body {
 }
 
 
+
 .column{
-  width : 50%;
+  width : 45%;
   float: left;
   color: #b49f89;
   font-size : 20px;
+  padding-left: 2rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.name_inputs_container{
+  display: flex;
+  flex-direction: column;
 }
 
 /* Themes */
@@ -38,6 +72,14 @@ body {
     background: #867550;
     color: #c6bead;
   } */
+
+  .input_label{
+    color: #38383b;
+  }
+
+  .heading{
+    color: #38383b;
+  }
 }
 @media (prefers-color-scheme: dark) {
   body,option {
