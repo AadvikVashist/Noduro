@@ -20,8 +20,14 @@ const createWindow = () => {
         nodeIntegration: true,
         nativeWindowOpen: true
       },
+      zoomToPageWidth: true,
+      show: false,
+      backgroundColor: '#2e2c29'
   })
-
+  mainWindow.maximize();
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  })
 
   mainWindow.webContents.openDevTools()
   mainWindow.loadFile('index.html');

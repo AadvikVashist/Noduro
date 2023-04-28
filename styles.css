@@ -18,11 +18,24 @@
     }
   
 }
-body {
+html, body {
   margin: 0;
   background: var(--background);
+  overflow-x: hidden;
 }
 
+
+/* Define the animation */
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply the animation to the text element */
 
 .welcome_div {
   display: flex;
@@ -43,27 +56,41 @@ body {
   color: var(--main_div_text_color);
   background-color: var(--background);
   line-height: 1.2;
+  margin: 0;
 }
-.welcome_div_items{
+.welcome_div .items{
   margin: 0rem;
   padding: 0rem;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   transition: all 1s;
-}
 
-.sign_in{
+}
+.animation{
+  opacity: 0;
+  animation-name: appear;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+
+}
+.welcome_div .sign_in_link{
   color: var(--main_div_link_color);
-  transition: all linear 300ms;
-  text-decoration: underline 0.3rem rgba(0,0,0,0);
+  transition: all linear 200ms;
+  text-decoration: underline 0.1em rgba(0,0,0,0);
 
 }
-.sign_in:hover{
+.welcome_div .sign_in_link:hover{
   text-decoration-color: var(--main_div_link_color);
+  color: var(--main_div_text_color);
+  transition: all easew 400ms;
+
+
 }
 
 .recommended{
   margin-top: 0;
+  margin-right: 0;
+  margin-left: 0;
   text-transform: capitalize;
   background: var(--scrolling);
   font-size: 20px;
@@ -74,7 +101,7 @@ body {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-.scrolling-div{
+.recommended .scrolling-div{
   background: none;
   background-attachment: scroll;
   font-size: 16px;
@@ -84,20 +111,20 @@ body {
   scroll-behavior: smooth;
 
 }
-.scrolling-div,  .card  {
+.recommended .scrolling-div, .recommended .card  {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
 
   
 }
-.card {
+.recommended .card {
   display: inline-block;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   max-height: 15rem;
 }
-.image{
+.recommended .image{
   border-radius: 1rem;
 }
 

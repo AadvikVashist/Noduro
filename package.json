@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^23.2.4"
+    "electron": "^23.3.0"
   },
   "dependencies": {
     "electron-json-storage": "^4.6.0",
     "google-auth-library": "^8.7.0"
   },
-  "description": ""
+  "description": "Noduro is an electron-based cross-platform app that utilizes HTML, CSS, Javascript, and Python to provide Daily Living Skill (DLS) instruction to children and young adults with disabilities. The installation process for developers is simple and straightforward. Here's  the process:"
 }
