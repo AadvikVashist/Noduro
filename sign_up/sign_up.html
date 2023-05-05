@@ -33,7 +33,7 @@
     <div class="signin_box">
       <h1>Sign up for Noduro</h1>
       <div class="login_box">
-        <form method="post">
+        <form method="post" id = "sign_up">
           <p>
             <label for="email">Email </label>
             <input class="input_box" type="email" name="email" id="email" placeholder="Email Address">
@@ -63,13 +63,8 @@
         <div>
           <h1 class="line">OR</h1>
         </div>
-        <div id="g_id_onload" data-client_id="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com"
-          data-context="signup" data-ux_mode="popup" data-login_uri="noduro:///sign_up/sign_up.html" data-nonce=""
-          data-auto_select="true" data-itp_support="true">
-        </div>
-        <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="signup_with"
-          data-size="large" data-logo_alignment="left">
-        </div>
+        childWindowPopup(firebaseAuth, provider)
+
       </div>
     </div>
 

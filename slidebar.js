@@ -16,6 +16,7 @@ function add_element(image_source, name) {
     image.setAttribute("class", "image");
 
     image.setAttribute("alt", name);
+
     image.src = image_source;
     // elem.setAttribute("height", "768");
     // elem.setAttribute("width", "1024");
