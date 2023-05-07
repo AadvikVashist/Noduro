@@ -1,9 +1,14 @@
-document.getElementById('toggle-mode').addEventListener('click', async () => {
-    const isDarkMode = await window.darkMode.toggle()
-    document.getElementById('toggle-mode').innerHTML = isDarkMode ? 'Dark' : 'Light'
+navigator.mediaDevices.getUserMedia({video: true})
+  .then(function(stream) {
+    document.getElementById('camera').srcObject = stream;
+
+    const track = stream.getVideoTracks()[0];
+    const settings = track.getSettings();
+    const width = settings.width;
+    const height = settings.height;
+    document.getElementById('camera').setAttribute('width', width);
+    document.getElementById('camera').setAttribute('height', height);
   })
-  
-  document.getElementById('reset-to-system').addEventListener('click', async () => {
-    await window.darkMode.system()
-    document.getElementById('toggle-mode').innerHTML = 'System'
-  })
+  .catch(function() {
+    alert('could not connect stream');
+  });

@@ -8,187 +8,53 @@
   --darker-color:  rgb(41,71,114);
   --lighter-color:   rgb(153,163,192); */
   --background: #efe5d1;
-  --login_box_background: #ffffff;
-  --login_box_text: 
-  --login_box_text_inverted:
-  --login_box_button:
-  --login_box_button_hover:
-  --login_box_button_hover_inverted:
+  --main: #c6b690;
+  --main-margin: 1vh;
 }
 
-
-body {
+html,body {
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   background: var(--background);
+  overflow: hidden;
 
 }
 
 
 .main_div {
-  width: 100%;
-  margin: 0;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding: 0;
   justify-content: center;
   display: flex;
   align-items: center;
+  flex-flow:row nowrap;
+  border-radius: 2vh;
+  background-color: var(--main);
+  position: absolute;
+  top: var(--main-margin);
+  left: var(--main-margin);
+  right: var(--main-margin);
+  height: 90vh;
+
 }
-.signin_box {
-  width: 40%;
-  border: None;
-  border-radius: 1rem;
-  text-align: center;
-  margin: 0;
-  padding-top: 0rem;
-  padding-bottom: 2rem;
-  padding-left: 1rem;
-  padding-right: 2rem;
-  display: block;
-  font-size: 20px;
-  background-color: #ffffff;
-  /* font-family: "Anuphan", sans-serif; */
-  -webkit-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.2);
+.video_div {
+  flex: 1; /* set equal width for both columns */
+  height: 100%;
+  width: 45%;
+  padding: none;
 }
-.login_box {
-  padding-top: 0rem;
-  padding-bottom: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  font-size: 20px;
-  font-family: "Roboto", sans-serif;
-  text-align: left;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-  position: relative;
+.camera_div {
+  flex: 1; /* set equal width for both columns */
+  height: 100%;
+  width: 45%;
+  padding: none;
+  border-radius: 2vh;
+
 }
-.input_box {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  border-radius: 0.5rem;
-  border: 0.5px solid #38383b;
-  border-radius: 0.5rem;
-  text-align: center;
-  background-color: #eaddc2;
-  color: #000000;
-  text-align: left;
-  width: max-content;
-  width: 90%;
-  margin-right: 3rem;
-  padding-left: 0.5rem;
-  padding-top: 0.3rem;
-  padding-bottom: 0.3rem;
-  padding-right: 20px;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-  position: relative;
-}
-.button_div{
+.camera{
   width: 100%;
-  background-color: inherit;
-  padding-top: 0.2rem;  
-  padding-bottom: 0.2rem;  
-  display: flex;
-  justify-content: space-between;
-}
-.sign_in_box,
-.sign_up_box {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  border: 2px solid #7a7a7a;
+  height: 100%;
+  object-fit: cover; /* optional - this will ensure the video fills the entire div without distortion */
+  border-radius: 2vh;
 
-  border-radius: 2rem;
-  text-align: center;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-  padding: 0.6rem 4rem 0.6rem;
-  /* -webkit-transition: color 1s; For Safari 3.0 to 6.0 */
-  transition: background-color 0.3s ease, color 0.3s ease;
-
-}
-.sign_in_box {
-  background-color: #b2a791;
-  color: #ffffff;
-  float: right;
-  margin-left: auto;
-  margin-right: 0;
-}
-.sign_up_box {
-  background-color: inherit;
-  color: #707070;
-  float: left;
-  margin-left: 0;
-  margin-right: auto;
-}
-
-.container {
-  padding-top: 50px;
-  margin: auto;
-}
-.sign_up_box:hover{
-  background-color: #9b917d;
-  color: #ffffff;
-}
-.sign_in_box:hover{
-  background-color: #ffffff;
-  color: #707070;
-}
-
-.line {
-  display: flex;
-  flex-direction: row;
-  font-size: 18px;
-  text-align: center;
-}
-.line:before,
-.line:after {
-  content: "";
-  flex: 1 1;
-  border-bottom: 1px solid;
-  border-color: #38383b;
-  margin: auto;
-}
-.line:before {
-  margin-right: 10px;
-}
-.line:after {
-  margin-left: 10px;
-}
-.line > span {
-  margin: 0 10px;
-}
-
-input {
-  font-size: 20px;
-  font-family: "Roboto", sans-serif;
-}
-input::placeholder {
-  opacity: 0.5;
-}
-
-form i {
-  margin-left: -80px;
-  cursor: pointer;
-  color: rgb(73, 73, 73);
-  position: relative;
-}
-
-.forgot_password {
-  font-size: 14px;
-  font-family: "Roboto", sans-serif;
-  text-align: right;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-  position: relative;
-  color: #38383b;
-  text-decoration: none;
-  -webkit-transition: color 0.2s; /* For Safari 3.0 to 6.0 */
-  transition: color 0.2s; /* For modern browsers */
-}
-.forgot_password:hover {
-  color: #9b9ba4;
-  text-decoration: underline;
 }

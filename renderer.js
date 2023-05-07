@@ -57,40 +57,6 @@ window.addEventListener('unload', function() {
 });
 
 
-const myDiv = document.querySelector('#scrolling-div');
-
-// Initialize a boolean variable to keep track of whether the user has scrolled before
-
-let lastscroll = 0;
-// Add a scroll event listener to the div element
-myDiv.addEventListener('scroll', function() {
-  // console.log("scrolling")
-  // Check if the user has already scrolled
-    // If this is the first time the user has scrolled, do something
-    // if (!document.getElementById("scrolling-div").classList.contains("open-scrolling-div")){
-    document.getElementById("scrolling-div").classList.add("open-scrolling-div")
-    document.getElementById("recommendation_text").classList.add("text-opened")
-    document.getElementById("left_shadow").classList.add("box_appear");
-    document.getElementById("right_shadow").classList.add("box_appear");
-    document.getElementById("left_shadow").classList.remove("before");
-    document.getElementById("right_shadow").classList.remove("before");
-    // Set the hasScrolled variable to true so that this code only runs once
-    lastscroll =  Date.now();
-    setTimeout(function (){
-      if (Date.now()  - lastscroll > 10000){
-      // console.log("setting back")
-      document.getElementById("scrolling-div").classList.remove("open-scrolling-div")
-      document.getElementById("recommendation_text").classList.remove("text-opened")
-
-      document.getElementById("left_shadow").classList.add("before");
-      document.getElementById("right_shadow").classList.add("before");
-      document.getElementById("left_shadow").classList.remove("box_appear");
-      document.getElementById("right_shadow").classList.remove("box_appear");
-    }
-  }, 10000);
-    
-
-});
 
 
 // Set the data for the chart
@@ -103,6 +69,7 @@ const data = {
     borderWidth: 0
   }]
 };
+
 
 // Set the options for the chart
 const options = {
@@ -126,32 +93,50 @@ const options = {
     intersect: true
   },
   plugins: {
+    beforeDraw: function(chart) {
+      drawLabels(chart);
+    },
     datalabels: {
-      color: '#fff',
+      color: 'var(--chart-label-color)',
       font: {
-        size: '30'
+        size: '30',
+        // family: 'Arial',
+        // style: 'normal',
+        // weight: 'normal'
       },
-      formatter: (value, context) => {
-        return context.chart.data.labels[context.dataIndex] + '\n' + value + '%';
+      formatter: function(value, context) {
+        return '';
       }
     },
     title: {
       text: 'Activity Type',
       display: true,
       font: {
-        size: '24'
-      }
+        size: '24',
+        fontFamily: 'Poppins',
+        // family: 'Montserrat',
+        // style: 'normal',
+        // weight: 'bold'
+      },
+      color: 'var(--chart-title-color)'
     }
   }
 };
 
-// Create the Chart object
+// Draw the labels next to the doughnut portions
+function drawLabels(chart) {
+  const ctx = chart.ctx;
+  const width = chart.width;
+  const height = chart.height;
+  const data = chart.data.datasets[0].data;
+}
 const ctx = document.getElementById('myChart').getContext('2d');
 const myChart = new Chart(ctx, {
   type: 'doughnut',
   data: data,
   options: options
 });
+
 
 function getRandomData() {
   const data = [];

@@ -41,27 +41,21 @@
         <label class="input_label"for="displayname">Display Name:</label>
         <input type="text" id="displayname" name="displayname" placeholder = "Display Name">
       </div>
+      </div>
+      <div class="column">
+        <h1 class = "heading">Visual Preferences</h1>
         <div class = "name_inputs_container">
           <label class="input_label"for="displayname">Theme:</label>
-          <div class = "theme_button_container"><button id = "dark_button" id = "buttons"class = "theme_button"> dark </button> <button id = "light_button" id = "buttons "class = "theme_button"> light </button></div>
+          <div class="triple-button" id = "triple-button">
+            
+            <div class = "theme-button"> <button id = toggle-button-1>Light</button> </div>
+            <div class = "theme-button"> <button id = toggle-button-2>System</button> </div>
+            <div class = "theme-button"> <button id = toggle-button-3>Dark</button> </div>
+          </div>        
         </div>
+        <button class = "submit_button" id="buttons">Submit</button>
+        
       </div>
-
-    </div>
-
-    
-    <div class="column">
-      <h1 class = "heading">Visual Preferences</h1>
-      <label class = "input_label" for="darkmode">Choose a theme mode:</label>
-      <select id="darkmode">
-        <option>System</option>
-        <option>Dark</option>
-        <option>Light</option>
-      </select>
-      <br></br>
-      <button class = "submit_button" id="buttons">Submit</button>
-
-    </div>
   </div>
   <script src="./settings.js"></script>
 </body>

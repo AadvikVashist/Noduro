@@ -81,15 +81,23 @@ contextBridge.exposeInMainWorld("firebase", {
 
 // Code that forces the system mode rather than a default of white. Reflects user preference, but open to change.
 const fs = require("fs");
-const { Session } = require("inspector");
 const path = require("path");
 var files = fs.readdirSync("./lessons/");
 var lessons = [];
 // console.log(files);
 for (var i in files) {
     var p = fs.readdirSync(path.join("./lessons/", i));
+    let image = null;
+    for (const file of p) {
+    const ext = path.extname(file).toLowerCase();
+    if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.gif') {
+        image = file;
+        break; // stop searching after the first image is found
+    }
+    }
+
     // console.log(path.join("./lessons/", i, p[0]));
-    lessons.push(path.join("./lessons/", i, p[0]));
+    lessons.push(path.join("./lessons/", i, image));
 
     // for (var ap in p) {
     //     // if (ap.includes(".png") || ap.includes(".jpg")) {
