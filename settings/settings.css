@@ -45,8 +45,9 @@
 
 .columns {
   display: flex;
-
+  position:relative;
   width: 100%;
+  padding-top: 1vh;
 
 }
 

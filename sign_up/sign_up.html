@@ -3,39 +3,37 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="google-signin-client_id"
-    content="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com">
+  <!-- <meta name="google-signin-client_id"
+    content="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com"> -->
   <link rel="stylesheet" type="text/css" href="./sign_up.css" />
   <link rel="stylesheet" href="../global/icon/icons.css" />
-  <link rel="stylesheet" href="../global/header.css" />
+  <link rel="stylesheet" href="../global/global_header.css" />
 
 
   <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
 </head>
 
 <body>
-  <div class="filler"></div>
-  <div class="page_header">
-    <div class="header_left">
-      <h1>Noduro Open Beta 1.0.0</h1>
-    </div>
-    <div class="header_right">
-      <button class="header_nav_button"><a class="header_nav_links" href=../index.html>Home</a>
-      </button>
-      <button class="header_nav_button"><a class="header_nav_links" href=../technology/tech.html>Technology</a>
-      </button>
-      <button class="header_nav_button"><a class="header_nav_links" href=../settings/settings.html>Settings</a>
-      </button>
-      <button class="header_nav_button"><a class="header_nav_links" href=login.html>Login</a>
-      </button>
+  <header>
+    <div class = "filler"></div>
+    <div class = "global_header"> 
+      <div class = "header_left">
+        <h1 class = "header_title" onclick="window.location.href='../index.html';">Noduro Open Beta 1.0</h1>
+      </div>
+      <div class = "header_right">
+        <button class = "navigation_button" onclick="window.location.href='../index.html';">Home</button>
+        <button class = "navigation_button" onclick="window.location.href='../technology/tech.html';">Technology</button>
+        <button class = "navigation_button" onclick="window.location.href='../settings/settings.html';">Settings</button>
+        <button class = "navigation_button" onclick="window.location.href='../login/login.html';">Login</button>
 
+      </div>
     </div>
-  </div>
+  </header>
   <div class="main_div">
     <div class="signin_box">
       <h1>Sign up for Noduro</h1>
       <div class="login_box">
-        <form method="post">
+        <form method="post" id = "sign_up">
           <p>
             <label for="email">Email </label>
             <input class="input_box" type="email" name="email" id="email" placeholder="Email Address">
@@ -65,20 +63,15 @@
         <div>
           <h1 class="line">OR</h1>
         </div>
-        <div id="g_id_onload" data-client_id="135381014052-hs8qc6avk8chp3epae7lhv3jfot0stcp.apps.googleusercontent.com"
-          data-context="signup" data-ux_mode="popup" data-login_uri="noduro:///sign_up/sign_up.html" data-nonce=""
-          data-auto_select="true" data-itp_support="true">
-        </div>
-        <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="signup_with"
-          data-size="large" data-logo_alignment="left">
-        </div>
+        childWindowPopup(firebaseAuth, provider)
+
       </div>
     </div>
 
     <script src="./sign_up.js"></script>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 </body>
 
 </html>

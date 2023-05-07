@@ -55,19 +55,22 @@
 
 body {
     font-family: "Poppins", sans-serif;
+    display:flex;
+    flex-flow: column nowrap;
     font-size: 16px;
     line-height: 1.5;
     background: var(--background);
 }
 
 .main_div {
+    position:relative;
     width: 100%;
-    margin-top: 0rem;
-    padding-top: 2rem;
+    margin-top: 0.2rem;
+    padding-top: 1vh;
     padding-bottom: 2rem;
     justify-content: center;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 .signin_box {
     width: 40%;
