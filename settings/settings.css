@@ -13,6 +13,16 @@
     --submit_button_text_hover: #3a2f18;
     --submit_button_bg_active: #4a412e;
     --submit_button_text_active: #fefefe;
+    --login_box_background: #ffffff;
+    --login_box_text: #000000;
+    --login_box_in_button: #4c4c4c;
+    --login_box_in_button_text: #ded4c1;
+    --login_box_in_button_hover: #2a2a2a;
+    --login_box_in_button_text_hover: #ded4c1;
+    --login_box_up_button: #ffffff;
+    --login_box_up_button_text: #4c4c4c;
+    --login_box_up_button_hover: #474747;
+    --login_box_up_button_text_hover: #ab9d83;
   }
 }
 
@@ -30,18 +40,56 @@
     --submit_button_text_hover: #3a2f18;
     --submit_button_bg_active: #4a412e;
     --submit_button_text_active: #fefefe;
-
-
+    --login_box_background: #ffffff;
+    --login_box_text: #000000;
+    --login_box_up_button: #c4b8a0;
+    --login_box_up_button_text: #4c4c4c;
+    --login_box_up_button_hover: #ffffff;
+    --login_box_up_button_text_hover: #000000;
+    --login_box_in_button: #4c4c4c;
+    --login_box_in_button_text: #ded4c1;
+    --login_box_in_button_hover: #2a2a2a;
+    --login_box_in_button_text_hover: #ded4c1;
+    --login_box_button_hover: #aba18f;
   }
 }
 
 
+body{
+  background-color: var(--background);
+  width: 100%;
+  margin-top: 0rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
 /* 
 .entry{
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   text-decoration: bold;
 } */
+
+.page_container{
+  background-color: white;
+  width: 40%;
+    min-width: 500px;
+    border: None;
+    border-radius: 1rem;
+    text-align: center;
+    margin: 0;
+    padding-top: 0rem;
+    padding-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
+    display: block;
+    font-size: 20px;
+    -webkit-box-shadow: 0px 0px 5px 4px var(--shadow);
+    -moz-box-shadow: 0px 0px 5px 4px var(--shadow);
+    box-shadow: 0px 0px 5px 4px var(--shadow);
+}
 
 .columns {
   display: flex;
@@ -65,6 +113,47 @@
   font-size: 2.5rem;
   font-family: "Poppins", sans-serif;
 
+}
+
+.dark_button{
+  height: 3rem;
+  width: 4.5rem;
+  padding: 0;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  background-color: var(--login_box_up_button);
+  color: var(--login_box_up_button_text);
+}
+
+
+.light_button{
+  height: 3rem;
+  width: 4.5rem;
+  padding: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-left: 0;
+  background-color: var(--login_box_up_button);
+  color: var(--login_box_up_button_text);
+}
+
+.system_button{
+  border-radius:0;
+  height: 3rem;
+  width: 4.5rem;
+  padding: 0;
+  background-color: var(--login_box_up_button);
+  color: var(--login_box_up_button_text);
+}
+
+.theme_button_container{
+  display: flex;
+  justify-content: start;
 }
 
 .name_inputs_container {
