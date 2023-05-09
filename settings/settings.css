@@ -75,11 +75,15 @@ body{
 .page_container{
   background-color: white;
   width: 40%;
+  position: absolute;
+  display: flex;
+  flex-direction: column-reverse;
     min-width: 500px;
     border: None;
     border-radius: 1rem;
     text-align: center;
     margin: 0;
+    margin-top: 35rem;
     padding-top: 0rem;
     padding-bottom: 2rem;
     padding-left: 1rem;
@@ -105,14 +109,13 @@ body{
   color: #b49f89;
   font-size: 2rem;
   flex-flow: column wrap;
-
+  opacity: 100;
   padding-left: 2rem;
 }
 
 .heading {
   font-size: 2.5rem;
   font-family: "Poppins", sans-serif;
-
 }
 
 .dark_button{
@@ -166,13 +169,18 @@ body{
 }
 
 .input_label {
+  text-align: left;
   font-size: 1.52rem;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
 }
 
+.dropdown {
+  visibility: hidden;
+}
+
 input {
-  width: 15rem;
+  width: 30rem;
   height: 2rem;
   border-radius: 0.5rem;
   border-width: 0.01rem;
