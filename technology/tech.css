@@ -34,7 +34,7 @@ html,body {
   top: var(--main-margin);
   left: var(--main-margin);
   right: var(--main-margin);
-  height: 90vh;
+  height: 85vh;
 
 }
 .video_div {

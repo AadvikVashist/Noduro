@@ -1,4 +1,3 @@
-// const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#password");
 const toggleConfirmPassword = document.querySelector("#toggleConfirmPassword");

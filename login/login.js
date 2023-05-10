@@ -1,4 +1,3 @@
-// const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const togglePassword = document.getElementById("togglePassword");
 const password = document.getElementById("password");
 

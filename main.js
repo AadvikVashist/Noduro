@@ -10,7 +10,6 @@ const {
 } = require("electron");
 const path = require("path");
 const url = require("url");
-
 const {
     signOut,
     onAuthStateChanged,
@@ -25,7 +24,8 @@ const {
 } = require("firebase/auth");
 const analytics = require("firebase/analytics");
 const firebase = require("firebase/app");
-
+const {spawn} = require("child_process");
+let pythonProcess = null;
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Import the functions you need from the SDKs you need
 
@@ -75,10 +75,8 @@ function initializeFirebase() {
 //       childWindow.on('closed', () => {
 //         childWindow = null
 //       })
-  
-// }  
 
-
+// }
 
 let mainWindow;
 // https://www.electronjs.org/docs/latest/tutorial/launch-app-from-url-in-another-app REMEBER THIS FO PACKAGING
@@ -102,6 +100,7 @@ const createWindow = () => {
             contextIsolation: true,
             nativeWindowOpen: true,
         },
+        nodeIntegration: true,
         zoomToPageWidth: true,
         show: false,
         backgroundColor: "#2e2c29",
@@ -143,122 +142,122 @@ const createWindow = () => {
         facebookProvider: FacebookAuthProvider,
     } = initializeFirebase();
 
-//     ipcMain.handle("firebase:sign_up", (event, email, password) => {
-//         createUserWithEmailAndPassword(firebaseAuth, email, password)
-//             .then((userCredential) => {
-//                 const user = userCredential.user;
-//                 event.sender.send("sign_up", [true, user]);
-//             })
-//             .catch((error) => {
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//                 // ..
-//                 event.sender.send("sign_up", [false, error]);
-//             });
-//     });
-
-//     ipcMain.handle("firebase:sign_in", (event, email, password) => {
-//         setPersistence(firebaseAuth, browserLocalPersistence)
-//             .then(() => {
-//                 // Existing and future Auth states are now persisted in the current
-//                 // session only. Closing the window would clear any existing state even
-//                 // if a user forgets to sign out.
-//                 // ...
-//                 // New sign-in will be persisted with session persistence.
-//                 signInWithEmailAndPassword(firebaseAuth, email, password)
-//                     .then((userCredential) => {
-//                         // Signed in
-//                         const user = userCredential.user;
-//                         event.sender.send("sign_in", [true, user.toJSON()]);
-//                         // ...
-//                     })
-//                     .catch((error) => {
-//                         const errorCode = error.code;
-//                         const errorMessage = error.message;
-//                         event.sender.send("sign_in", [false, error.toJSON()]);
-//                     });
-//             })
-//             .catch((error) => {
-//                 // Handle Errors here.
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//                 event.sender.send("sign_in", error);
-//             })
-//         });
-
-//     ipcMain.handle("firebase:google_sign_in", (event) => {
-//         // signInWithGoogle(firebaseAuth, GoogleAuthProvider)
-//         session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-//             details.requestHeaders['Origin'] = 'https://<YOUR_AUTH_DOMAIN>';
-//             callback({ cancel: false, requestHeaders: details.requestHeaders });
-//           });
-//           fsignInWithRedirect(firebaseAuth, GoogleAuthProvider)
-//             .then((result) => {
-//                 // Accounts successfully linked.
-//                 const credential =
-//                     GoogleAuthProvider.credentialFromResult(result);
-//                 const token = credential.accessToken;
-//                 const user = result.user;
-//                 event.sender.send("sign_in", [true, user]);
-//                 // ...
-//             })
-//             .catch((error) => {
-//                 // Handle Errors here.
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//                 // The email of the user's account used.
-//                 const email = error.customData.email;
-//                 // The AuthCredential type that was used.
-//                 // ...
-//                 event.sender.send("sign_in", [false, error]);
-//             });
-//     });
-
-    ipcMain.handle("firebase:get_current_user", (event) => {
-        onAuthStateChanged(firebaseAuth, (user) => {
-            if (user) {
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/firebase.User
-                const uid = user.uid;
-                event.sender.send("user", [true, user.uid])
-              // ...
-            } else {
-                event.sender.send("user", [false, "not_signed_in"])
-              // User is signed out
-              // ...
-            }
+        ipcMain.handle("firebase:sign_up", (event, email, password) => {
+            createUserWithEmailAndPassword(firebaseAuth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    event.sender.send("sign_up", [true, user]);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // ..
+                    event.sender.send("sign_up", [false, error]);
+                });
         });
+        ipcMain.handle("firebase:sign_in", (event, email, password) => {
+            setPersistence(firebaseAuth, browserLocalPersistence)
+                .then(() => {
+                    // Existing and future Auth states are now persisted in the current
+                    // session only. Closing the window would clear any existing state even
+                    // if a user forgets to sign out.
+                    // ...
+                    // New sign-in will be persisted with session persistence.
+                    signInWithEmailAndPassword(firebaseAuth, email, password)
+                        .then((userCredential) => {
+                            // Signed in
+                            const user = userCredential.user;
+                            event.sender.send("sign_in", [true, user.toJSON()]);
+                            // ...
+                        })
+                        .catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            event.sender.send("sign_in", [false, error.toJSON()]);
+                        });
+                })
+                .catch((error) => {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    event.sender.send("sign_in", error);
+                })
+            });
+        ipcMain.handle("firebase:google_sign_in", (event) => {
+            // signInWithGoogle(firebaseAuth, GoogleAuthProvider)
+            session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+                details.requestHeaders['Origin'] = 'https://<YOUR_AUTH_DOMAIN>';
+                callback({ cancel: false, requestHeaders: details.requestHeaders });
+              });
+              fsignInWithRedirect(firebaseAuth, GoogleAuthProvider)
+                .then((result) => {
+                    // Accounts successfully linked.
+                    const credential =
+                        GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+                    const user = result.user;
+                    event.sender.send("sign_in", [true, user]);
+                    // ...
+                })
+                .catch((error) => {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // The email of the user's account used.
+                    const email = error.customData.email;
+                    // The AuthCredential type that was used.
+                    // ...
+                    event.sender.send("sign_in", [false, error]);
+                });
+        });
+        ipcMain.handle("firebase:get_current_user", (event) => {
+            onAuthStateChanged(firebaseAuth, (user) => {
+                if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                    const uid = user.uid;
+                    event.sender.send("user", [true, user.uid])
+                // ...
+                } else {
+                    event.sender.send("user", [false, "not_signed_in"])
+                // User is signed out
+                // ...
+                }
+            });
+        });
+        ipcMain.handle("firebase:set_persistence", (event, email, password) => {
+                setPersistence(firebaseAuth, browserLocalPersistence)
+                    .then(() => {
+                        // Existing and future Auth states are now persisted in the current
+                        // session only. Closing the window would clear any existing state even
+                        // if a user forgets to sign out.
+                        // ...
+                        // New sign-in will be persisted with session persistence.
+                        return signInWithEmailAndPassword(auth, email, password);
+                    })
+                    .catch((error) => {
+                        // Handle Errors here.
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                    });
+        });
+        ipcMain.handle("firebase:sign_out", (event) => {
+            signOut(firebaseAuth)
+                .then(() => {
+                    event.sender.send("sign_out", true)
+                    // Sign-out successful.
+                })
+                .catch((error) => {
+                    event.sender.send("sign_out", false)
+                    // An error happened.
+                });
+        });
+    
+    ipcMain.on('start-python-script', (event, arg) => {
+        pythonProcess = spawn('python3', [path.join(__dirname, 'python/run.py')])
     });
 
-//     ipcMain.handle("firebase:set_persistence", (event, email, password) => {
-//         setPersistence(firebaseAuth, browserLocalPersistence)
-//             .then(() => {
-//                 // Existing and future Auth states are now persisted in the current
-//                 // session only. Closing the window would clear any existing state even
-//                 // if a user forgets to sign out.
-//                 // ...
-//                 // New sign-in will be persisted with session persistence.
-//                 return signInWithEmailAndPassword(auth, email, password);
-//             })
-//             .catch((error) => {
-//                 // Handle Errors here.
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//             });
-//     });
-
-//     ipcMain.handle("firebase:sign_out", (event) => {
-//         signOut(firebaseAuth)
-//             .then(() => {
-//                 event.sender.send("sign_out", true)
-//                 // Sign-out successful.
-//             })
-//             .catch((error) => {
-//                 event.sender.send("sign_out", false)
-//                 // An error happened.
-//             });
-//     });
-};
+    };
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -300,6 +299,7 @@ app.on("open-url", (event, url) => {
 });
 
 app.on("window-all-closed", () => {
+    pythonProcess.kill();
     if (process.platform !== "darwin") {
         app.quit();
     }

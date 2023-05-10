@@ -1,5 +1,3 @@
-// const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
-// const {ipcMain} = require('electron')
 
 let firstnameVal = localStorage.getItem("firstname");
 let lastnameVal = localStorage.getItem("lastname");
