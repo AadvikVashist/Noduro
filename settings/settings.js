@@ -1,10 +1,11 @@
-// const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
-// const {ipcMain} = require('electron')
 
 let firstnameVal = localStorage.getItem("firstname");
 let lastnameVal = localStorage.getItem("lastname");
 let displaynameVal = localStorage.getItem("displayname");
 let darkmodeVal = localStorage.getItem("darkmode");
+let dark_color = "linear-gradient(90deg, var(--theme-not-selected) 0%, var(--theme-half-selected) 33.33%, var(--theme-selected) 66.66%, var(--theme-selected) 100%)";
+let light_color = "linear-gradient(90deg, var(--theme-selected) 0%, var(--theme-selected) 33.33%, var(--theme-half-selected) 66.66%, var(--theme-not-selected) 100%)";;
+let system_color = "linear-gradient(90deg, var(--theme-not-selected) 0%, var(--theme-selected) 33.33%, var(--theme-selected) 66.66%, var(--theme-not-selected) 100%)";;
 
 // if (firstnameVal != null) {
 //     document.getElementById("firstname").value = firstnameVal;
@@ -16,16 +17,32 @@ let darkmodeVal = localStorage.getItem("darkmode");
 //     document.getElementById("displayname").value = displaynameVal;
 // }
 if (darkmodeVal != null) {
-    document.getElementById("darkmode").value = darkmodeVal;
-
     if (darkmodeVal == "Dark") {
+        document.getElementById("toggle-button-3").classList.add("active");
         window.darkMode.dark();
+        document.getElementById("triple-button").style.backgroundImage = dark_color;
     } else if (darkmodeVal == "Light") {
+        document.getElementById("toggle-button-1").classList.add("active");
         window.darkMode.light();
+        document.getElementById("triple-button").style.backgroundImage = light_color;
     } else {
+        document.getElementById("toggle-button-2").classList.add("active");
         window.darkMode.system();
+        document.getElementById("triple-button").style.backgroundImage = system_color;
+            
     }
 }
+
+document.getElementById("dark_button").addEventListener("click", async () => {
+    window.darkMode.dark();
+});
+document.getElementById("light_button").addEventListener("click", async () => {
+    window.darkMode.light();
+});
+document.getElementById("system_button").addEventListener("click", async () => {
+    window.darkMode.system();
+});
+
 
 document.getElementById("dark_button").addEventListener("click", async () => {
     window.darkMode.dark();
@@ -63,15 +80,18 @@ document.getElementById("buttons").addEventListener("click", async () => {
     //     localStorage.setItem("displayname", displayname.value);
     // }
 
-    localStorage.setItem("darkmode", darkmode.value);
-
-
-    if (darkmode.value == "Dark") {
+    if (theme_val != null) {
+    localStorage.setItem("darkmode", theme_val);
+    if (theme_val == "Dark") {
         await window.darkMode.dark();
-    } else if (darkmode.value == "Light") {
+        document.getElementById("triple-button").style.backgroundImage = dark_color;
+    } else if (theme_val == "Light") {
         await window.darkMode.light();
+        document.getElementById("triple-button").style.backgroundImage = light_color;
     } else {
         await window.darkMode.system();
+        document.getElementById("triple-button").style.backgroundImage = system_color;
+    }
     }
 });
 
