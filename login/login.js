@@ -23,17 +23,23 @@ passwordInput.addEventListener('input', () => {
 });
 
 
+
 const form = document.querySelector('#sign_in');
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email_address = form.elements.email.value;
     const password = form.elements.password.value;
-    await window.firebase.sign_in(email_address, password);
+    var sign_in = await firebase.email_sign_in(email_address, password);
+    if (sign_in[0]) {
     console.log("success");
-
+    window.location.replace("../index.html");
+    } else {
+    if (!confirm("Either your email address or password are incorrect. Please try again, or if you need help, contact us for support")) {
+        window.location.replace("../index.html");
+        }
+    }
 });
 
-window.firebase.google_sign_in();
 
 // window.firebase.sign_in("aadvik.vashist@outlook.com", "password");
 

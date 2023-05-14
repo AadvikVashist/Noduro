@@ -1,2 +1,4 @@
 node_modules/
 111958329639
+src/firebase/firebaseAdmin.json
+src/firebase/firebaseConfig.json

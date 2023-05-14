@@ -57,11 +57,35 @@ passwordInput.addEventListener('input', () => {
 });
 
 const form = document.querySelector('#sign_up');
-form.addEventListener('submit', async () => {
+form.addEventListener('submit',async (event) => {
+    event.preventDefault();
     const email_address = form.elements.email.value;
     const password = form.elements.password.value;
-    await window.sign.sign_up(email_address, password);
+    const confirm_password = form.elements.confirm_password.value;
+    const first_name = form.elements.first_name.value;
+    const last_name = form.elements.last_name.value;
+    const date_of_birth = form.elements.date_of_birth.value;
+    if (password != confirm_password) {
+        alert("Your passwords do not match. Please try again");
+    }
+    else if (password.length < 1 || email_address.length < 1 || confirm_password.length < 1) {
+        alert("Please fill out all fields");
+    }
+    else{
+        var sign_up = await firebase.email_sign_up(email_address, password, first_name, last_name,date_of_birth);
+        if (sign_up[0]) {
+            console.log("success");
+            window.location.replace("../index.html");
+        }
+        else if(sign_up[1].message == "Firebase: Error (auth/email-already-in-use)."){
+            alert("This email is already in use. If you have an account, please try signing in, or clicking forgot password. If you need help, contact us for support")
+        }
+        else {
+            alert(sign_up[1].message + "\nIf you may have an account, please try signing in, or clicking forgot password. Please try again, or if you need help, contact us for support")
+        }
+    }
 });
+
 // document.getElementById("submit").addEventListener("click", async () => {
 //     const firstname = document.getElementById("firstname");
 //     const lastname = document.getElementById("lastname");

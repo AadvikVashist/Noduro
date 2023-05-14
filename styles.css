@@ -69,13 +69,15 @@ html, body {
   color: var(--main_div_text_color);
   background-color: var(--background);
   margin: 0;
+  transition: all linear 1s;
 }
 .welcome_div .items{
   margin: 0rem;
   padding: 0rem 0rem 0rem 2rem;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
-  transition: all 1s;
+  transition: opacity 0.5s ease-out;
+
 
 }
 .animation{

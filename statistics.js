@@ -91,7 +91,7 @@ function animateOnIntersection(objId, textId, startValue, endValue, duration,end
                 observer.unobserve(element);
             }
         });
-    }, options);
+    });
 
     observer.observe(obj);
 }

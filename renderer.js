@@ -1,25 +1,25 @@
-//Actually change the text of the button to reflect the current Dark/Light/System mode
-
-
-a =  firebase.get_current_user()
-.then((val) => {
-  // do something when the promise is fulfilled
-  document.getElementById("welcome").innerHTML = "Welcome back, " + val;
-  document.getElementById("sign_in").innerHTML =
-      "<a class = 'sign_in_link' href= './login/login.html'> Sign In </a> to Noduro";
-})
-.catch((val) => {
-  // do something when the promise is fulfilled
+async function signIn(email, password) {
+  // await firebase.email_sign_in("aadvik.vashist@outlook.com", "password");
+  // handle the result
+  var val = await firebase.check_user_local();
+  if (localStorage.getItem("first_name") != null) {
+    document.getElementById("welcome").innerHTML = "Welcome back, " + localStorage.getItem("first_name");
+    let last_login = await firebase.get_last_login(86400);
+    if (last_login){
+    document.getElementById("sign_in").innerHTML =
+        "<a class = 'sign_in_link' href= './login/login.html'> Sign In </a> to Noduro";
+    }
+  } else {
     document.getElementById("welcome").innerHTML = "Welcome to Noduro";
     document.getElementById("sign_in").innerHTML =
         "<a class = 'sign_in_link' href= './sign_up/sign_up.html'> Sign up </a> to Noduro to get started";
+  }
+}
 
-});
 
-
+signIn();
 //HEADER ONLY LOADS ONCE
 let header = document.getElementById("global_h");
-
 
 
 if (Date.now()  - parseInt(sessionStorage.getItem('global_header_anim')) > 4000){
@@ -39,6 +39,12 @@ else if (sessionStorage.getItem('global_header_anim') == null && header.classLis
   
   
 }
+else if (sessionStorage.getItem('global_header_anim') != null && header.classList.contains("global_header_anim_b4")) {
+  window.addEventListener('scroll', function() {
+    // Run your code here that should only be executed the first time the user scrolls
+  header.classList.add("global_header_anim");
+  }, { once: true });
+}
 
 let element = document.querySelector('.animation');
 
@@ -52,7 +58,6 @@ if (Date.now()  - parseInt(sessionStorage.getItem('index_animation')) < 2000){
 
 window.addEventListener('unload', function() {
   sessionStorage.setItem('index_animation',  Date.now());
-  console.log("set");
 
 });
 
