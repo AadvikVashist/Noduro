@@ -1,21 +1,10 @@
 //Actually change the text of the button to reflect the current Dark/Light/System mode
 
 
-a =  firebase.get_current_user()
-.then((val) => {
   // do something when the promise is fulfilled
-  document.getElementById("welcome").innerHTML = "Welcome back, " + val;
+  document.getElementById("welcome").innerHTML = "Welcome back, " + "val";
   document.getElementById("sign_in").innerHTML =
       "<a class = 'sign_in_link' href= './login/login.html'> Sign In </a> to Noduro";
-})
-.catch((val) => {
-  // do something when the promise is fulfilled
-    document.getElementById("welcome").innerHTML = "Welcome to Noduro";
-    document.getElementById("sign_in").innerHTML =
-        "<a class = 'sign_in_link' href= './sign_up/sign_up.html'> Sign up </a> to Noduro to get started";
-
-});
-
 
 //HEADER ONLY LOADS ONCE
 let header = document.getElementById("global_h");
@@ -170,5 +159,4 @@ function getRandomData() {
 
   return data;
 }
-
 

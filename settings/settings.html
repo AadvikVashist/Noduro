@@ -5,66 +5,151 @@
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="./settings.css" />
   <link rel="stylesheet" href="../global/global_header.css" />
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/;" />
 </head>
 
 <body>
   <header>
-    <div class = "filler"></div>
-    <div class = "global_header"> 
-      <div class = "header_left">
-        <h1 class = "header_title" onclick="window.location.href='../index.html';">Noduro Open Beta 1.0</h1>
+    <div class="global_header">
+      <div class="header_left">
+        <h1 class="header_title" onclick="window.location.href='../index.html';">Noduro Open Beta 1.0</h1>
       </div>
-      <div class = "header_right">
-        <button class = "navigation_button" onclick="window.location.href='../index.html';">Home</button>
-        <button class = "navigation_button" onclick="window.location.href='../technology/tech.html';">Technology</button>
-        <button class = "navigation_button" onclick="window.location.href='./settings.html';">Settings</button>
-        <button class = "navigation_button" onclick="window.location.href='../login/login.html';">Login</button>
+      <div class="header_right">
+        <button class="navigation_button" onclick="window.location.href='../index.html';">Home</button>
+        <button class="navigation_button" onclick="window.location.href='../technology/tech.html';">Technology</button>
+        <button class="navigation_button" onclick="window.location.href='./settings.html';">Settings</button>
+        <button class="navigation_button" onclick="window.location.href='../login/login.html';">Login</button>
 
       </div>
     </div>
+    <div class="filler"></div>
   </header>
-
-
-  <div class = "page_container">
-      <h1 class="heading">System Settings</h1>
-        <div class = "name_inputs_container">
-          <label class="input_label" for="firstname">First name:</label>
-          <input type="text" id="firstname" name="firstname" placeholder = "First Name">
-        </div>
-      <div class = "name_inputs_container">
-        <label class="input_label"for="lastname">Last name: </label>
-        <input type="text" id="lastname" name="lastname" placeholder = "Last Name">
-      </div>
-      <div class = "name_inputs_container">
-        <label class="input_label"for="displayname">Display Name:</label>
-        <input type="text" id="displayname" name="displayname" placeholder = "Display Name">
-      </div>
-        <div class = "name_inputs_container">
-          <label class="input_label"for="displayname">Theme:</label>
-          <div class = "theme_button_container">
-            <button id = "dark_button" class = "dark_button"> dark </button>
-            <button id = "system_button" class = "system_button"> system </button> 
-            <button id = "light_button" class = "light_button"> light </button>
-          </div>
-        </div>
-  </div>
-
-<!--     
-    <div class="column">
-      <h1 class = "heading">Visual Preferences</h1>
-      <label class = "input_label" for="darkmode">Choose a theme mode:</label>
-      <select class = "dropdown" id="darkmode">
-        <option>System</option>
-        <option>Dark</option>
-        <option>Light</option>
-      </select>
-      <br></br>
-      <button class = "submit_button" id="buttons">Submit</button>
+  <div class="main-div">
+    <!-- <div class="left-bar">
 
     </div> -->
-  </div>
-  <script src="./settings.js"></script>
+    <div class="right-bar">
+      <div class="sub-item">
+        <h1 class="heading">Visual Preferences</h1>
+        <hr class="accent-line">
+        <!-- <h2 class= "sub-heading">Theme:</h2> -->
+        <div class="split">
+          <p>Select the color palette of the app, with either a light, dark, or the operating system theme.</p>
+          <div class="triple-button" id="triple-button">
+            <div class="theme-button"> <button id=toggle-button-1>Light</button> </div>
+            <div class="theme-button"> <button id=toggle-button-2>System</button> </div>
+            <div class="theme-button"> <button id=toggle-button-3>Dark</button> </div>
+          </div>
+        </div>
+        <!-- <div class = "split">
+        <div class="font-size-toggle">
+          <button class="small">Small</button>
+          <button class="normal">Normal</button>
+          <button class="large">Large</button>
+        </div>
+        
+      </div> -->
+      </div>
+      <div class="sub-item">
+        <h1 class="heading">Video</h1>
+        <hr class="accent-line">
+        <video id="camera_test" class="video"></video>
+        <label for="resolution">Resolution:</label>
+        <select id="resolution" class="dropdown option">
+          <!-- Add more resolution options if needed -->
+        </select>
+        <div class = "split-space-2col">
+        <label class = "toggle_switch_label">Flip Camera</label>
+        <label class="toggle-switch">
+          <input id="flipVideo" type="checkbox" class="option">
+          <span class="toggle-switch-label"></span>
+        </label>
+        <div></div>
+        <label class = "toggle_switch_label">Autofocus</label>
+        <label class="toggle-switch">
+          <input id="focus" type="checkbox" class="option">
+          <span class="toggle-switch-label"></span>
+        </label>
+        <div></div>
+
+
+        <label class = "toggle_switch_label">Adjust for Low Light</label>
+          <label class="toggle-switch">
+            <input id="lowLightCheckbox" type="checkbox" class="option">
+            <span class="toggle-switch-label"></span>
+          </label>
+        <div>
+          <input type="range" id="lowLightSlider" min="0" max="20" step="1" class="audioSlider custom-slider option">
+        </div>
+        </div>
+
+      </div>
+      <div class="sub-item">
+        <h1 class="heading">Audio</h1>
+        <hr class="accent-line">
+
+        <div class="split-space">
+          <label class="toggle_switch_label">Main Volume</label>
+          <div>
+            <input type="range" id="mainVolumeSlider" min="0" max="100" step="1" class="audioSlider custom-slider">
+          </div>
+
+          <label class="toggle_switch_label">Sound Effect Volume</label>
+          <div>
+            <input type="range" id="sfxSlider" min="0" max="100" step="1" class="audioSlider custom-slider">
+          </div>
+
+          <label class="toggle_switch_label">Teacher Volume</label>
+          <div>
+            <input type="range" id="teacherVolume" min="0" max="100" step="1" class="audioSlider custom-slider">
+          </div>
+
+          <label class="toggle_switch_label">Urgent Request Volume</label>
+          <div>
+            <input type="range" id="urgentVolume" min="0" max="100" step="1" class="audioSlider custom-slider">
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="sub-item">
+        <h1 class="heading">Privacy Security</h1>
+        <hr class="accent-line">
+        <div class ="split-space">
+
+        <label class = "toggle_switch_label">Record Audio (beta)</label>
+        <label class="toggle-switch">
+          <input id="toggleSwitch" type="checkbox">
+          <span class="toggle-switch-label"></span>
+        </label>
+
+        <label class = "toggle_switch_label">Record Video(beta)</label>
+        <label class="toggle-switch">
+          <input id="toggleSwitch" type="checkbox">
+          <span class="toggle-switch-label"></span>
+        </label>
+
+
+        <label class = "toggle_switch_label">Locally Store User Data (beta)</label>
+        <label class="toggle-switch">
+          <input id="toggleSwitch" type="checkbox">
+          <span class="toggle-switch-label"></span>
+        </label>
+
+        <label class = "toggle_switch_label">Anonymize Data (beta)</label>
+        <label class="toggle-switch">
+          <input id="toggleSwitch" type="checkbox">
+          <span class="toggle-switch-label"></span>
+        </label>
+      </div>
+      <button class = "reset_button" id = "password_delete">Delete all local passwords</button>
+      <button class = "reset_button" id = "reset_page">Reset settings to default</button>
+      </div>
+        <button class = "submit_button" id = "submit_button">Submit</button>
+    </div>
+    </div>
+    <script src="./settings.js"></script>
 </body>
 
 </html>
