@@ -8,6 +8,8 @@ const {
     nativeTheme,
     dialog,
     safeStorage,
+    Notification,
+    nativeImage
 } = require("electron");
 const path = require("path");
 const url = require("url");
@@ -36,16 +38,15 @@ var admin = require("firebase-admin");
 
 
 
-
-
-
 const firebaseConfig = require("./src/firebase/firebaseConfig.json");
 var serviceAccount = require("./src/firebase/firebaseAdmin.json");
 const firestoreConfig = {credential: admin.credential.cert(serviceAccount)};
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Import the functions you need from the SDKs you need
+app.setName("Noduro");
 
 function initializeFirebase() {
-    
     const firebaseapp = firebase.initializeApp(firebaseConfig);
     const db = getFirestore(admin.initializeApp(firestoreConfig));
     const auth = getAuth(firebaseapp);
@@ -54,6 +55,12 @@ function initializeFirebase() {
     const facebookProvider = new FacebookAuthProvider();
     return { firebaseapp, db, auth, analytics, googleProvider, facebookProvider };
 }
+
+const iconPath = {
+    darwin: path.join(__dirname, 'icon.icns'),
+    win32: path.join(__dirname, 'icon.ico'),
+    linux: path.join(__dirname, 'icon.png')
+  };
 
 let mainWindow;
 // https://www.electronjs.org/docs/latest/tutorial/launch-app-from-url-in-another-app REMEBER THIS FO PACKAGING
@@ -73,11 +80,10 @@ const createWindow = () => {
         height: 900,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
-            nodeIntegration: true,
             contextIsolation: true,
             nativeWindowOpen: true,
+            nodeIntegration: true
         },
-        nodeIntegration: true,
         zoomToPageWidth: true,
         show: false,
         backgroundColor: "#2e2c29",
@@ -110,6 +116,21 @@ const createWindow = () => {
         nativeTheme.themeSource = "system";
     });
 
+    ipcMain.handle('firebase:delete_local', async (event) => {
+        try {
+        const service = "noduro_accounts";
+        const credentials = await keytar.findCredentials(service);
+        const deletionPromises = credentials.map((credential) => {
+            return keytar.deletePassword(service, credential.account);
+        });
+        await Promise.all(deletionPromises);
+        return true;
+        } catch (error) {
+            console.error("Error deleting local accounts:", error);
+            throw new Error("Failed to delete local accounts");
+        }
+    });
+
     //Firebase
     const {
         firebaseapp,
@@ -120,102 +141,102 @@ const createWindow = () => {
         facebookProvider: FacebookAuthProvider,
     } = initializeFirebase();
 
-
-      // Add a new document in collection "cities" with ID 'LA'
-    ipcMain.handle("firebase:get_last_login", async(event, email) => {
-        return await keytar.getPassword('noduro_accounts', email + "_time");
-    });
-
-    ipcMain.handle("firebase:check_user_persist", async (event,email) => {
-        try{
-            const secret = await keytar.getPassword('noduro_accounts', email);
-            return [true, secret];
-        }
-        catch(error){
-            return [false, error];
-        }
-    });
-
-    ipcMain.handle("firebase:email_sign_up", async (event, email, password, first_name, last_name, date_of_birth) => {
-        try{
-            const user_cred = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-            const userRef = await firestore.collection('users').doc(user_cred.user.uid).set({
-                email_address: email,
-                first_name: first_name,
-                last_name: last_name,
-                date_of_birth: date_of_birth,
-            })
-            await keytar.setPassword('noduro_accounts', email, password);
-            await keytar.setPassword('noduro_accounts', email + "_time", Date.now().toString());
-
-            const user = JSON.stringify(user_cred.user);
-            return [true, user];
-        }
-        catch(error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-            return [false, error];
-        }
-    });
-    ipcMain.handle("firebase:email_sign_in", async (event, email, password,user_signing_in) => {
-        try {
-            await setPersistence(firebaseAuth, browserLocalPersistence);
-            const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
-            keytar.setPassword('noduro_accounts', email, password);
-            if (user_signing_in){
-            await keytar.setPassword('noduro_accounts', email + "_time", Date.now().toString());
+          // Add a new document in collection "cities" with ID 'LA'
+          ipcMain.handle("firebase:get_last_login", async(event, email) => {
+            return await keytar.getPassword('noduro_accounts', email + "_time");
+        });
+    
+        ipcMain.handle("firebase:check_user_persist", async (event,email) => {
+            try{
+                const secret = await keytar.getPassword('noduro_accounts', email);
+                return [true, secret];
             }
-            const user = JSON.stringify(userCredential.user);
-            return [true, user];
-        } catch (error) {
-            return [false, error];
-        }
-    });
-    ipcMain.handle("firebase:get_current_user", async (event) => {
-        return new Promise((resolve) => {
-            onAuthStateChanged(firebaseAuth, (user) => {
-            if (user) {
-                const user_send = JSON.stringify(user);
-                resolve([true, user_send]);
-            } else {
-                resolve([false, "user_not_found"]);
+            catch(error){
+                return [false, error];
             }
         });
+    
+        ipcMain.handle("firebase:email_sign_up", async (event, email, password, first_name, last_name, date_of_birth) => {
+            try{
+                const user_cred = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+                const userRef = await firestore.collection('users').doc(user_cred.user.uid).set({
+                    email_address: email,
+                    first_name: first_name,
+                    last_name: last_name,
+                    date_of_birth: date_of_birth,
+                })
+                await keytar.setPassword('noduro_accounts', email, password);
+                await keytar.setPassword('noduro_accounts', email + "_time", Date.now().toString());
+    
+                const user = JSON.stringify(user_cred.user);
+                return [true, user];
+            }
+            catch(error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+                return [false, error];
+            }
         });
-    });
-    ipcMain.handle("firebase:get_current_user_information", async (event,user) => {
-        const userRef = await firestore.collection('users').doc(user.uid).get();
-        if (userRef.exists) {
-            // var x = {...user, ...userRef.data()}
-            return [true, {...user, ...userRef.data()}];
-        }
-        else {
-            return [false, "user_firestore_data_not_found"];
-        }
-    });
-    ipcMain.handle("firebase:email_sign_out", async (event, email) => {
-        try{ 
-            signOut(firebaseAuth)
-            keytar.deletePassword('noduro_accounts', email);
-            return true;
-        }
-        catch(error){
-            return error;
-        }
-        
-    });
-
-    ipcMain.on('start-python-script', async (event, arg) => {
-        pythonProcess = spawn('python3', [path.join(__dirname, 'python/run.py')])
-    });
-
-    };
+        ipcMain.handle("firebase:email_sign_in", async (event, email, password,user_signing_in) => {
+            try {
+                await setPersistence(firebaseAuth, browserLocalPersistence);
+                const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+                keytar.setPassword('noduro_accounts', email, password);
+                if (user_signing_in){
+                await keytar.setPassword('noduro_accounts', email + "_time", Date.now().toString());
+                }
+                const user = JSON.stringify(userCredential.user);
+                return [true, user];
+            } catch (error) {
+                return [false, error];
+            }
+        });
+        ipcMain.handle("firebase:get_current_user", async (event) => {
+            return new Promise((resolve) => {
+                onAuthStateChanged(firebaseAuth, (user) => {
+                if (user) {
+                    const user_send = JSON.stringify(user);
+                    resolve([true, user_send]);
+                } else {
+                    resolve([false, "user_not_found"]);
+                }
+            });
+            });
+        });
+        ipcMain.handle("firebase:get_current_user_information", async (event,user) => {
+            const userRef = await firestore.collection('users').doc(user.uid).get();
+            if (userRef.exists) {
+                // var x = {...user, ...userRef.data()}
+                return [true, {...user, ...userRef.data()}];
+            }
+            else {
+                return [false, "user_firestore_data_not_found"];
+            }
+        });
+        ipcMain.handle("firebase:email_sign_out", async (event, email) => {
+            try{ 
+                signOut(firebaseAuth)
+                keytar.deletePassword('noduro_accounts', email);
+                return true;
+            }
+            catch(error){
+                return error;
+            }
+            
+        });
+    
+        ipcMain.on('start-python-script', async (event, arg) => {
+            pythonProcess = spawn('python3', [path.join(__dirname, 'python/run.py')])
+        });
+};
+    
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
     app.quit();
-} else {
+} 
+else {
     app.on("second-instance", (event, commandLine, workingDirectory) => {
         // Someone tried to run a second instance, we should focus our window.
         if (mainWindow) {
@@ -229,9 +250,13 @@ if (!gotTheLock) {
             `You arrived from: ${commandLine.pop().slice(0, -1)}`
         );
     });
-
     // Create mainWindow, load the rest of the app, etc...
     app.whenReady().then(() => {
+        const platform = process.platform;
+        if (platform === 'darwin') var icon_img = iconPath.darwin;
+        else if (platform === 'win32') var icon_img = iconPath.win32;
+        else if (platform === 'linux') var icon_img = iconPath.linux;
+        app.dock.setIcon(nativeImage.createFromPath(icon_img));
         createWindow();
         protocol.registerFileProtocol("noduro", (request, callback) => {
             const filePath = url.fileURLToPath(

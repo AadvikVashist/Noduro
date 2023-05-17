@@ -1,5 +1,7 @@
-const { contextBridge, ipcRenderer, safeStorage} = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 let darkmodeVal = localStorage.getItem("darkmode");
+const fs = require("fs");
+const path = require("path");
 
 
 async function sign_in(email,password,user_signing_in){
@@ -21,7 +23,18 @@ contextBridge.exposeInMainWorld("darkMode", {
     dark: () => ipcRenderer.invoke("dark-mode:dark"),
     light: () => ipcRenderer.invoke("dark-mode:light"),
 });
+
 contextBridge.exposeInMainWorld("firebase", {
+    delete_local_accounts: () => {
+        try {
+            ipcRenderer.invoke("firebase:delete_local")
+            return true;
+        }
+        catch{
+            console.log("Error deleting local accounts");
+            return false;
+        }
+    },
     get_last_login: async (duration) => {
         const email = localStorage.getItem("email");
         if (email == null) {
@@ -114,21 +127,30 @@ contextBridge.exposeInMainWorld("firebase", {
 
 });
 
+contextBridge.exposeInMainWorld("noduro", {
+    readJSONFile: (filePath) => {
+        try {
+            const data = fs.readFileSync(path.join(__dirname + filePath), 'utf-8');
+            const jsonObject = JSON.parse(data);
+            return jsonObject;
+        } catch (error) {
+            throw new Error('File does not exist');
+        }
+    },
+    writeJSONFile: (filePath,content) => {
+        try {
+            fs.writeFileSync(path.join(__dirname + filePath), content);
+            console.log('Object saved as JSON:', filePath);
+        } catch (error) {
+            console.error('Error saving object as JSON:', error);
+        }
+    }
+});
 
-// contextBridge.exposeInMainWorld("noduro_api", {
-//     start_video: (args, callback) => {
-//         ipcRenderer.send("start-python-script", args);
-//         console.log("start-python-script sent");
-//         ipcRenderer.on("video-url", (event, data) => {
-//             console.log("video-data received");
-//             callback(data); // call the callback function with the received data
-//         });
-//     },
-// });
+
 
 // Code that forces the system mode rather than a default of white. Reflects user preference, but open to change.
-const fs = require("fs");
-const path = require("path");
+
 var files = fs.readdirSync("./lessons/");
 var lessons = [];
 // console.log(files);
@@ -163,16 +185,15 @@ contextBridge.exposeInMainWorld("noduro_api", {
         const net = require('net');
 
         const client = net.connect({ port: 5000 }, () => {
-        console.log('connected to server!');
+            console.log('connected to server!');
         });
-
 
         client.on('data', (data) => {
             update_camera(`data:video/mp4;base64,${data.toString('base64')}`);
         });
 
         client.on('end', () => {
-        console.log('disconnected from server');
+            console.log('disconnected from server');
         });
     }
 });
