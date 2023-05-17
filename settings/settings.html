@@ -79,7 +79,7 @@
             <span class="toggle-switch-label"></span>
           </label>
         <div>
-          <input type="range" id="lowLightSlider" min="0" max="20" step="1" class="audioSlider custom-slider option">
+          <input type="range" id="lowLightSlider" min="0" max="10" step="1" class="lightSlider custom-slider option ">
         </div>
         </div>
 
@@ -120,31 +120,33 @@
 
         <label class = "toggle_switch_label">Record Audio (beta)</label>
         <label class="toggle-switch">
-          <input id="toggleSwitch" type="checkbox">
+          <input id="record_audio" type="checkbox">
           <span class="toggle-switch-label"></span>
         </label>
 
-        <label class = "toggle_switch_label">Record Video(beta)</label>
+        <label class = "toggle_switch_label">Record Video (beta)</label>
         <label class="toggle-switch">
-          <input id="toggleSwitch" type="checkbox">
+          <input id="record_video" type="checkbox">
           <span class="toggle-switch-label"></span>
         </label>
 
 
         <label class = "toggle_switch_label">Locally Store User Data (beta)</label>
         <label class="toggle-switch">
-          <input id="toggleSwitch" type="checkbox">
+          <input id="local_storage" type="checkbox">
           <span class="toggle-switch-label"></span>
         </label>
 
         <label class = "toggle_switch_label">Anonymize Data (beta)</label>
         <label class="toggle-switch">
-          <input id="toggleSwitch" type="checkbox">
+          <input id="anonymize_data" type="checkbox">
           <span class="toggle-switch-label"></span>
         </label>
       </div>
+      <div  class = "reset_div">
       <button class = "reset_button" id = "password_delete">Delete all local passwords</button>
       <button class = "reset_button" id = "reset_page">Reset settings to default</button>
+    </div>
       </div>
         <button class = "submit_button" id = "submit_button">Submit</button>
     </div>

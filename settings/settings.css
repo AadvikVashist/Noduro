@@ -89,7 +89,13 @@
     --slider-track-color: #8e7b5a;
     --slider-thumb-color: #53504b;
 
-
+    --reset_button_bg: #af8159;
+    --reset_button_text: #000000;
+    --reset_button_bg_hover: #832d2d;
+    --reset_button_text_hover: #000000;
+    --reset_button_bg_active: #4a412e;
+    --reset_button_bg_active: #ca2222;
+    --reset_button_text_active: #000000;
 
     --submit_button_bg: #d4c19c;
     --submit_button_text: #000000;
@@ -162,7 +168,7 @@ html, body {
   flex-flow: column wrap;
   justify-content: left;
   margin: 1vh 1vw 1vh 1vw;
-  padding: 1vh 0vw 1vh 4vw;
+  padding: 1vh 4vw 1vh 4vw;
   border-radius: 1rem;
   background-color: var(--sub-item-background-color);
   /* border: 2px solid var(--sub-item-background-color); */
@@ -193,6 +199,7 @@ html, body {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
+
 }
 .sub-item .split-space-2col{
   padding-right: 2vw;
@@ -294,11 +301,7 @@ html, body {
   width: fit-content;
 }
 
-.sliderContainer {
-  margin: 0 0 0 1vw;
-  opacity: 0;
-  transition: opacity 0.5s;
-}
+
 
 
 .custom-slider {
@@ -326,12 +329,22 @@ html, body {
 .text{
   width: 50%;
 }
+
+.lightSlider{
+  margin: 0 0 0 1vw;
+  opacity: 0;
+  transition: opacity 0.5s;
+  flex-grow: 1;
+  width: 20vw
+}
+
 .audioSlider {
   margin: 0 4vw 0 4vw;
   flex-grow: 1;
 }
 
-.sliderContainer.show {
+
+.show {
   opacity: 1;
 }
 
@@ -344,6 +357,8 @@ html, body {
   padding-right: 1vw;
   font-weight: 500;
   font-family: 'Roboto', sans-serif;
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
 }
 
 .toggle-switch {
@@ -398,12 +413,18 @@ html, body {
 }
 
 
+.reset_div{
+  margin-top: 2vh;
+  padding-bottom: 2vh;
+  display: flex;
+  justify-content: space-between;
+}
 
 .reset_button {
   color: var(--reset_button_text);
   background-color: var(--reset_button_bg);
-  width: calc(13 * var(--toggle-button-scale));
-  font-size: calc(0.75 * var(--toggle-button-scale));
+  width: calc(16 * var(--toggle-button-scale));
+  font-size: calc(0.85 * var(--toggle-button-scale));
   font-family: "Poppins", sans-serif;
   border-radius: calc(1 * var(--toggle-button-scale));
   border: none;

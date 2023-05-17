@@ -12,7 +12,7 @@ const {
 } = require("electron");
 const path = require("path");
 const url = require("url");
-
+const keytar = require("keytar");
 const {
     signOut,
     onAuthStateChanged,
@@ -25,7 +25,7 @@ const {
     GoogleAuthProvider,
     FacebookAuthProvider,
 } = require("firebase/auth");
-const analytics = require("firebase/analytics");
+// const analytics = require("firebase/analytics");
 const firebase = require("firebase/app");
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -41,36 +41,6 @@ function initializeFirebase() {
     const facebookProvider = new FacebookAuthProvider();
     return { firebaseapp, auth, analytics, googleProvider, facebookProvider };
 }
-
-// let childWindow = null;
-// function signInWithGoogle(auth,provider) {
-//     // check if child window already exists
-//     if (childWindow) {
-//         childWindow.focus()
-//         return
-//       }
-//       // create the child window
-//       childWindow = new BrowserWindow({
-//         width: 600,
-//         height: 400,
-//         parent: mainWindow, // set the parent window
-//         modal: true, // make the child window modal
-//         webPreferences: {
-//           nodeIntegration: true // enable node integration in the child window
-//         }
-//       })
-//       // load a custom URL in the child window
-//       ichildWindow.once("ready-to-show", () => {
-//         childWindow.show();
-//     });
-//     childWindow.loadFile('./src/firebase/index.html')
-
-//       // handle window close event
-//       childWindow.on('closed', () => {
-//         childWindow = null
-//       })
-  
-// }  
 
 
 const iconPath = {
@@ -133,6 +103,20 @@ const createWindow = () => {
         nativeTheme.themeSource = "system";
     });
 
+    ipcMain.handle('firebase:delete_local', async (event) => {
+        try {
+        const service = "noduro_accounts";
+        const credentials = await keytar.findCredentials(service);
+        const deletionPromises = credentials.map((credential) => {
+            return keytar.deletePassword(service, credential.account);
+          });
+          await Promise.all(deletionPromises);
+          return true;
+        } catch (error) {
+          console.error("Error deleting local accounts:", error);
+          throw new Error("Failed to delete local accounts");
+        }
+      });
     //Firebase
     const {
         firebaseapp,
@@ -142,37 +126,14 @@ const createWindow = () => {
         facebookProvider: FacebookAuthProvider,
     } = initializeFirebase();
 
-    ipcMain.handle("firebase:get_current_user", (event) => {
-        onAuthStateChanged(firebaseAuth, (user) => {
-            if (user) {
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/firebase.User
-                const uid = user.uid;
-                event.sender.send("user", [true, user.uid])
-              // ...
-            } else {
-                event.sender.send("user", [false, "not_signed_in"])
-              // User is signed out
-              // ...
-            }
-        });
-    });
 
-    ipcMain.handle("firebase:delete_local_accounts", (event) => {
-        const credentials = keytar.findCredentials();
-
-        // Delete passwords for each service and account combination
-        credentials.forEach((credential) => {
-            const { service, account } = credential;
-            keytar.deletePassword(service, account);
-        });
-    });
-};
+}
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
     app.quit();
-} else {
+} 
+else {
     app.on("second-instance", (event, commandLine, workingDirectory) => {
         // Someone tried to run a second instance, we should focus our window.
         if (mainWindow) {
@@ -193,8 +154,7 @@ if (!gotTheLock) {
         else if (platform === 'win32') var icon_img = iconPath.win32;
         else if (platform === 'linux') var icon_img = iconPath.linux;
         app.dock.setIcon(nativeImage.createFromPath(icon_img));
-        createWindow()
-        showNotification();
+        createWindow();
         protocol.registerFileProtocol("noduro", (request, callback) => {
             const filePath = url.fileURLToPath(
                 "file://" + request.url.slice("noduro://".length)
