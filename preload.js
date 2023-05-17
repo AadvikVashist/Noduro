@@ -1,5 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 let darkmodeVal = localStorage.getItem("darkmode");
+const fs = require("fs");
+const path = require("path");
 
 contextBridge.exposeInMainWorld("darkMode", {
     toggle: () => ipcRenderer.invoke("dark-mode:toggle"),
@@ -7,82 +9,43 @@ contextBridge.exposeInMainWorld("darkMode", {
     dark: () => ipcRenderer.invoke("dark-mode:dark"),
     light: () => ipcRenderer.invoke("dark-mode:light"),
 });
-contextBridge.exposeInMainWorld("firebase", {
-    sign_up: async (email, password) => {
-        console.log("sign up request in preload");
-        ipcRenderer.invoke("firebase:sign_up", email, password)
-        console.log("sign up request in progress");
-        ipcRenderer.on('user', (event, user) => {
-            if (user[0]) {
-                console.log("user request retrieved");
-                return user[1];
-            }
-            else {
-                console.log("user request failed");
-                return user[1];
-            }
-        });
-    },
 
-    sign_in: async (email, password) => {
-        ipcRenderer.invoke("firebase:sign_in", email, password);
-        ipcRenderer.on('user', (event, user) => {
-            if (user[0]) {
-                console.log("user request retrieved");
-                console.log(JSON.stringify(user[1]));
-                const string = JSON.stringify(user[1]);
-                sessionStorage.setItem("user", string);
-            } else {
-                console.log("user request failed");
-                reject(JSON.stringify(user[1]));
-            }
-        });
+contextBridge.exposeInMainWorld("firebase", {
+    delete_local_accounts: () => {
+        try {
+            ipcRenderer.invoke("firebase:delete_local")
+            return true;
+        }
+        catch{
+            console.log("Error deleting local accounts");
+            return false;
+        }
+    }
+});
+contextBridge.exposeInMainWorld("noduro", {
+    readJSONFile: (filePath) => {
+        try {
+            const data = fs.readFileSync(path.join(__dirname + filePath), 'utf-8');
+            const jsonObject = JSON.parse(data);
+            return jsonObject;
+        } catch (error) {
+            throw new Error('File does not exist');
+        }
     },
-    google_sign_in: async () => {
-        ipcRenderer.invoke("firebase:google_sign_in");
-        ipcRenderer.on('user', (event, user) => {
-            if (user[9]) {
-                console.log("user request retrieved");
-                return user;
-            }
-            else {
-                console.log("user request failed");
-                return user;
-            }
-        });
-    },
-    get_current_user: async () => {
-        return new Promise((resolve, reject) => {
-            ipcRenderer.invoke('firebase:get_current_user');
-            ipcRenderer.on('user', (event, user) => {
-                if (user[0]) {
-                    console.log('current user found');
-                    const string = JSON.stringify(user[1]);
-                    sessionStorage.setItem('current_user', string);
-                    resolve(user[1]);
-                } else {
-                    console.log('no current user');
-                    reject(JSON.stringify(user[1]));
-                }
-            });
-        });
-        },
-            sign_out: async () => {
-                ipcRenderer.invoke("firebase:sign_out");
-                ipcRenderer.on('sign_out', (event, user) => {
-                    if (user[0]) {
-                        console.log("signed out");
-                    } else {
-                        console.log("sign out failed");
-                    }
-                });
-            },
+    writeJSONFile: (filePath,content) => {
+        try {
+            fs.writeFileSync(path.join(__dirname + filePath), content);
+            console.log('Object saved as JSON:', filePath);
+        } catch (error) {
+            console.error('Error saving object as JSON:', error);
+        }
+    }
 });
 
+
+
 // Code that forces the system mode rather than a default of white. Reflects user preference, but open to change.
-const fs = require("fs");
-const { Session } = require("inspector");
-const path = require("path");
+
 var files = fs.readdirSync("./lessons/");
 var lessons = [];
 // console.log(files);

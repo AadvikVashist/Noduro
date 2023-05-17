@@ -7,10 +7,12 @@ const {
     ipcMain,
     nativeTheme,
     dialog,
+    Notification,
+    nativeImage
 } = require("electron");
 const path = require("path");
 const url = require("url");
-
+const keytar = require("keytar");
 const {
     signOut,
     onAuthStateChanged,
@@ -23,21 +25,13 @@ const {
     GoogleAuthProvider,
     FacebookAuthProvider,
 } = require("firebase/auth");
-const analytics = require("firebase/analytics");
+// const analytics = require("firebase/analytics");
 const firebase = require("firebase/app");
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Import the functions you need from the SDKs you need
+app.setName("Noduro");
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDB6ZzWpHF3da9XgrgkQEWoehKdcYSQClI",
-    authDomain: "noduro-29c67.firebaseapp.com",
-    projectId: "noduro-29c67",
-    storageBucket: "noduro-29c67.appspot.com",
-    messagingSenderId: "619458371418",
-    appId: "1:619458371418:web:56cba5ef57cd3d7a87dd63",
-    measurementId: "G-ZY59G5CRXR",
-};
 
 function initializeFirebase() {
     const firebaseapp = firebase.initializeApp(firebaseConfig);
@@ -48,37 +42,12 @@ function initializeFirebase() {
     return { firebaseapp, auth, analytics, googleProvider, facebookProvider };
 }
 
-// let childWindow = null;
-// function signInWithGoogle(auth,provider) {
-//     // check if child window already exists
-//     if (childWindow) {
-//         childWindow.focus()
-//         return
-//       }
-//       // create the child window
-//       childWindow = new BrowserWindow({
-//         width: 600,
-//         height: 400,
-//         parent: mainWindow, // set the parent window
-//         modal: true, // make the child window modal
-//         webPreferences: {
-//           nodeIntegration: true // enable node integration in the child window
-//         }
-//       })
-//       // load a custom URL in the child window
-//       ichildWindow.once("ready-to-show", () => {
-//         childWindow.show();
-//     });
-//     childWindow.loadFile('./src/firebase/index.html')
 
-//       // handle window close event
-//       childWindow.on('closed', () => {
-//         childWindow = null
-//       })
-  
-// }  
-
-
+const iconPath = {
+    darwin: path.join(__dirname, 'icon.icns'),
+    win32: path.join(__dirname, 'icon.ico'),
+    linux: path.join(__dirname, 'icon.png')
+  };
 
 let mainWindow;
 // https://www.electronjs.org/docs/latest/tutorial/launch-app-from-url-in-another-app REMEBER THIS FO PACKAGING
@@ -134,6 +103,20 @@ const createWindow = () => {
         nativeTheme.themeSource = "system";
     });
 
+    ipcMain.handle('firebase:delete_local', async (event) => {
+        try {
+        const service = "noduro_accounts";
+        const credentials = await keytar.findCredentials(service);
+        const deletionPromises = credentials.map((credential) => {
+            return keytar.deletePassword(service, credential.account);
+          });
+          await Promise.all(deletionPromises);
+          return true;
+        } catch (error) {
+          console.error("Error deleting local accounts:", error);
+          throw new Error("Failed to delete local accounts");
+        }
+      });
     //Firebase
     const {
         firebaseapp,
@@ -143,127 +126,14 @@ const createWindow = () => {
         facebookProvider: FacebookAuthProvider,
     } = initializeFirebase();
 
-//     ipcMain.handle("firebase:sign_up", (event, email, password) => {
-//         createUserWithEmailAndPassword(firebaseAuth, email, password)
-//             .then((userCredential) => {
-//                 const user = userCredential.user;
-//                 event.sender.send("sign_up", [true, user]);
-//             })
-//             .catch((error) => {
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//                 // ..
-//                 event.sender.send("sign_up", [false, error]);
-//             });
-//     });
 
-//     ipcMain.handle("firebase:sign_in", (event, email, password) => {
-//         setPersistence(firebaseAuth, browserLocalPersistence)
-//             .then(() => {
-//                 // Existing and future Auth states are now persisted in the current
-//                 // session only. Closing the window would clear any existing state even
-//                 // if a user forgets to sign out.
-//                 // ...
-//                 // New sign-in will be persisted with session persistence.
-//                 signInWithEmailAndPassword(firebaseAuth, email, password)
-//                     .then((userCredential) => {
-//                         // Signed in
-//                         const user = userCredential.user;
-//                         event.sender.send("sign_in", [true, user.toJSON()]);
-//                         // ...
-//                     })
-//                     .catch((error) => {
-//                         const errorCode = error.code;
-//                         const errorMessage = error.message;
-//                         event.sender.send("sign_in", [false, error.toJSON()]);
-//                     });
-//             })
-//             .catch((error) => {
-//                 // Handle Errors here.
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//                 event.sender.send("sign_in", error);
-//             })
-//         });
-
-//     ipcMain.handle("firebase:google_sign_in", (event) => {
-//         // signInWithGoogle(firebaseAuth, GoogleAuthProvider)
-//         session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-//             details.requestHeaders['Origin'] = 'https://<YOUR_AUTH_DOMAIN>';
-//             callback({ cancel: false, requestHeaders: details.requestHeaders });
-//           });
-//           fsignInWithRedirect(firebaseAuth, GoogleAuthProvider)
-//             .then((result) => {
-//                 // Accounts successfully linked.
-//                 const credential =
-//                     GoogleAuthProvider.credentialFromResult(result);
-//                 const token = credential.accessToken;
-//                 const user = result.user;
-//                 event.sender.send("sign_in", [true, user]);
-//                 // ...
-//             })
-//             .catch((error) => {
-//                 // Handle Errors here.
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//                 // The email of the user's account used.
-//                 const email = error.customData.email;
-//                 // The AuthCredential type that was used.
-//                 // ...
-//                 event.sender.send("sign_in", [false, error]);
-//             });
-//     });
-
-    ipcMain.handle("firebase:get_current_user", (event) => {
-        onAuthStateChanged(firebaseAuth, (user) => {
-            if (user) {
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/firebase.User
-                const uid = user.uid;
-                event.sender.send("user", [true, user.uid])
-              // ...
-            } else {
-                event.sender.send("user", [false, "not_signed_in"])
-              // User is signed out
-              // ...
-            }
-        });
-    });
-
-//     ipcMain.handle("firebase:set_persistence", (event, email, password) => {
-//         setPersistence(firebaseAuth, browserLocalPersistence)
-//             .then(() => {
-//                 // Existing and future Auth states are now persisted in the current
-//                 // session only. Closing the window would clear any existing state even
-//                 // if a user forgets to sign out.
-//                 // ...
-//                 // New sign-in will be persisted with session persistence.
-//                 return signInWithEmailAndPassword(auth, email, password);
-//             })
-//             .catch((error) => {
-//                 // Handle Errors here.
-//                 const errorCode = error.code;
-//                 const errorMessage = error.message;
-//             });
-//     });
-
-//     ipcMain.handle("firebase:sign_out", (event) => {
-//         signOut(firebaseAuth)
-//             .then(() => {
-//                 event.sender.send("sign_out", true)
-//                 // Sign-out successful.
-//             })
-//             .catch((error) => {
-//                 event.sender.send("sign_out", false)
-//                 // An error happened.
-//             });
-//     });
-};
+}
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
     app.quit();
-} else {
+} 
+else {
     app.on("second-instance", (event, commandLine, workingDirectory) => {
         // Someone tried to run a second instance, we should focus our window.
         if (mainWindow) {
@@ -277,9 +147,13 @@ if (!gotTheLock) {
             `You arrived from: ${commandLine.pop().slice(0, -1)}`
         );
     });
-
     // Create mainWindow, load the rest of the app, etc...
     app.whenReady().then(() => {
+        const platform = process.platform;
+        if (platform === 'darwin') var icon_img = iconPath.darwin;
+        else if (platform === 'win32') var icon_img = iconPath.win32;
+        else if (platform === 'linux') var icon_img = iconPath.linux;
+        app.dock.setIcon(nativeImage.createFromPath(icon_img));
         createWindow();
         protocol.registerFileProtocol("noduro", (request, callback) => {
             const filePath = url.fileURLToPath(
