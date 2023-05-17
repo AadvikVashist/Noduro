@@ -57,9 +57,9 @@ function initializeFirebase() {
 }
 
 const iconPath = {
-    darwin: path.join(__dirname, 'icon.icns'),
-    win32: path.join(__dirname, 'icon.ico'),
-    linux: path.join(__dirname, 'icon.png')
+    darwin: path.join(__dirname, '/src/icons/icon.icns'),
+    win32: path.join(__dirname, '/src/icons/icon.ico'),
+    linux: path.join(__dirname, '/src/icons/icon.png')
   };
 
 let mainWindow;
@@ -87,6 +87,7 @@ const createWindow = () => {
         zoomToPageWidth: true,
         show: false,
         backgroundColor: "#2e2c29",
+        icon: iconPath[process.platform]
     });
     mainWindow.maximize();
     mainWindow.once("ready-to-show", () => {
@@ -253,10 +254,11 @@ else {
     // Create mainWindow, load the rest of the app, etc...
     app.whenReady().then(() => {
         const platform = process.platform;
-        if (platform === 'darwin') var icon_img = iconPath.darwin;
+        if (platform === 'darwin'){
+            var icon_img = iconPath.darwin; app.dock.setIcon(nativeImage.createFromPath(icon_img));
+        }
         else if (platform === 'win32') var icon_img = iconPath.win32;
         else if (platform === 'linux') var icon_img = iconPath.linux;
-        app.dock.setIcon(nativeImage.createFromPath(icon_img));
         createWindow();
         protocol.registerFileProtocol("noduro", (request, callback) => {
             const filePath = url.fileURLToPath(
