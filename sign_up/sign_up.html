@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../global/global_header.css" />
 
 
-  <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/;"/>
 </head>
 
 <body>
@@ -35,9 +35,24 @@
       <div class="login_box">
         <form method="post" id = "sign_up">
           <p>
+            <label for="first_name">First Name </label>
+            <input class="input_box" type="input" name="first_name" id="first_name" placeholder="First Name">
+          </p>
+          <p>
+            <label for="last_name">Last Name </label>
+            <input class="input_box" type="input" name="last_name" id="last_name" placeholder="Last Name">
+          </p>
+          <p>
             <label for="email">Email </label>
             <input class="input_box" type="email" name="email" id="email" placeholder="Email Address">
           </p>
+
+          <p>
+            <label for="age">Date of Birth </label>
+            <input class="input_box" type="date" name="age" id="date_of_birth" placeholder="Date of Birth">
+          </p>
+
+
           <p>
             <label for="password">Password </label>
             <input class="input_box" type="password" name="password" id="password" placeholder="Password" />
@@ -63,7 +78,6 @@
         <div>
           <h1 class="line">OR</h1>
         </div>
-        childWindowPopup(firebaseAuth, provider)
 
       </div>
     </div>

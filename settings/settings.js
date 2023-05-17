@@ -6,21 +6,22 @@ let system_color =
     "linear-gradient(90deg, var(--theme-not-selected) 0%, var(--theme-selected) 33.33%, var(--theme-selected) 66.66%, var(--theme-not-selected) 100%)";
 
 const commonResolutions = [
-    [1280, 720],    // 720p
-    [1366, 768],    // WXGA
-    [1600, 900],    // HD+
-    [1920, 1080],   // 1080p (Full HD)
-    [2048, 1080],   // 2K (DCI)
-    [2560, 1440],   // 1440p (QHD)
-    [2560, 1600],   // 1600p (WQXGA)
-    [3440, 1440],   // UWQHD (Ultra-Wide QHD)
-    [3840, 1600],   // 1600p Ultrawide
-    [3840, 2160],   // 4K (Ultra HD)
-    [5120, 2880],   // 5K (Ultra HD+)
-    [7680, 4320]    // 8K (Full Ultra HD)
-    ];
+    [7680, 4320], // 8K (Full Ultra HD)
+    [5120, 2880], // 5K (Ultra HD+)
+    [3840, 2160], // 4K (Ultra HD)
+    [3840, 1600], // 1600p Ultrawide
+    [3440, 1440], // UWQHD (Ultra-Wide QHD)
+    [2560, 1600], // 1600p (WQXGA)
+    [2560, 1440], // 1440p (QHD)
+    [2048, 1080], // 2K (DCI)
+    [1920, 1080], // 1080p (Full HD)
+    [1600, 900], // HD+
+    [1366, 768], // WXGA
+    [1280, 720] // 720p
+];
 
 var theme_val;
+var track;
 var default_settings_path = "/src/settings/default_settings.json";
 var user_settings_path = "/src/settings/user_settings.json";
 
@@ -87,11 +88,15 @@ function initialize(){
     }
 
     video_flip.checked = settings.video.flipVideo;
-    if (video_flip.checked) flip();
+    if (settings.video.flipVideo) flip();
     video_focus.checked = settings.video.autofocus;
 
-    if (settings.video.lowLight == -1) video_lowLight.checked = false;
-    else video_lowLightSlider.value = settings.video.lowLight; video_lowLightSlider.classList.add('show'); video_lowLight.checked = true;
+    if (settings.video.lowLight == -1){
+        video_lowLight.checked = false;
+    }
+    else{
+        video_lowLightSlider.value = settings.video.lowLight; video_lowLightSlider.classList.add('show'); video_lowLight.checked = true;
+    }
 
     audio_main.value = settings.audio.master_volume;
     audio_sound_effects.value = settings.audio.sound_effects_volume;
@@ -132,8 +137,13 @@ function during(){
             camera_object.srcObject = stream;
             camera_object.onloadedmetadata = function () {
             camera_object.play();
-
-            const track = stream.getVideoTracks()[0];
+    
+            // Create a canvas element to manipulate the video stream
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+        
+            // Adjust for low light
+            track = stream.getVideoTracks()[0];
             const capabilities = track.getCapabilities();
 
             // Retrieve the supported resolutions
@@ -242,9 +252,10 @@ document.getElementById('submit_button').addEventListener('click', () => {
     settings.video.resolution = video_resolution.value.split('x').map(function(str) {
     return parseInt(str, 10);
     });
-    settings.video.flipVideo = flipVideo.checked;
-    if(!video_focus.checked) settings.video.lowLight = -1;
-    else settings.video.lowLight =lowLightSlider.value;
+    settings.video.flipVideo = video_flip.checked;
+    if(!video_lowLight.checked) settings.video.lowLight = -1;
+    else settings.video.lowLight = video_lowLightSlider.value;
+    settings.video.autofocus = video_focus.checked;
 
     settings.audio.master_volume = audio_main.value;
     settings.audio.sound_effects_volume = audio_sound_effects.value;
@@ -260,3 +271,4 @@ document.getElementById('submit_button').addEventListener('click', () => {
     window.noduro.writeJSONFile(user_settings_path,jsonContent);
     confirm("Settings saved successfully!");
 });
+

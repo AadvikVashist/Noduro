@@ -1,47 +1,55 @@
 {
-  "version": "0.2.0",
-  "compounds": [
-    {
-      "name": "Main + renderer",
-      "configurations": ["Main", "Renderer"],
-      "stopAll": true
-    }
-  ],
-  "configurations": [
-    {
-      "name": "Renderer",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9222,
-      "webRoot": "${workspaceFolder}/",
-      "sourceMaps": true,
-      "timeout": 30000,
-      "trace": true
-    },
-    {
-      "name": "Main",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      // "windows": {
-      //   "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      // },
-      "args": [".", "--remote-debugging-port=9222"],
-      "outputCapture": "std",
-      "console": "integratedTerminal"
-    },
-    {
-      "name": "Debug Main Process",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      // "windows": {
-      //   "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      // },
-      "args" : ["."],
-      "outputCapture": "std"
-    }
-  ]
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Main + renderer",
+            "configurations": ["Main", "Renderer"],
+            "stopAll": true
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Renderer",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}/",
+            "sourceMaps": true,
+            "timeout": 30000,
+            "trace": true
+        },
+        {
+            "name": "Main",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            // "windows": {
+            //   "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            // },
+            "args": [".", "--remote-debugging-port=9222"],
+            "outputCapture": "std",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Main Process",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            // "windows": {
+            //   "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            // },
+            "args": ["."],
+            "outputCapture": "std"
+        }
+    ]
 }

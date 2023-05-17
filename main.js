@@ -7,12 +7,12 @@ const {
     ipcMain,
     nativeTheme,
     dialog,
+    safeStorage,
     Notification,
     nativeImage
 } = require("electron");
 const path = require("path");
 const url = require("url");
-const keytar = require("keytar");
 const {
     signOut,
     onAuthStateChanged,
@@ -25,23 +25,36 @@ const {
     GoogleAuthProvider,
     FacebookAuthProvider,
 } = require("firebase/auth");
-// const analytics = require("firebase/analytics");
+const analytics = require("firebase/analytics");
 const firebase = require("firebase/app");
+const {spawn} = require("child_process");
+const keytar = require('keytar')
+let pythonProcess = null;
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Import the functions you need from the SDKs you need
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
+var admin = require("firebase-admin");
+
+
+
+const firebaseConfig = require("./src/firebase/firebaseConfig.json");
+var serviceAccount = require("./src/firebase/firebaseAdmin.json");
+const firestoreConfig = {credential: admin.credential.cert(serviceAccount)};
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Import the functions you need from the SDKs you need
 app.setName("Noduro");
 
-
 function initializeFirebase() {
     const firebaseapp = firebase.initializeApp(firebaseConfig);
+    const db = getFirestore(admin.initializeApp(firestoreConfig));
     const auth = getAuth(firebaseapp);
     const analytics = null;
     const googleProvider = new GoogleAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
-    return { firebaseapp, auth, analytics, googleProvider, facebookProvider };
+    return { firebaseapp, db, auth, analytics, googleProvider, facebookProvider };
 }
-
 
 const iconPath = {
     darwin: path.join(__dirname, 'icon.icns'),
@@ -67,9 +80,9 @@ const createWindow = () => {
         height: 900,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
-            nodeIntegration: true,
             contextIsolation: true,
             nativeWindowOpen: true,
+            nodeIntegration: true
         },
         zoomToPageWidth: true,
         show: false,
@@ -77,10 +90,10 @@ const createWindow = () => {
     });
     mainWindow.maximize();
     mainWindow.once("ready-to-show", () => {
+        mainWindow.webContents.openDevTools();
         mainWindow.show();
     });
 
-    mainWindow.webContents.openDevTools();
     mainWindow.loadFile("index.html");
 
     // mainWindow.webContents.send('reset_scroll');
@@ -109,25 +122,115 @@ const createWindow = () => {
         const credentials = await keytar.findCredentials(service);
         const deletionPromises = credentials.map((credential) => {
             return keytar.deletePassword(service, credential.account);
-          });
-          await Promise.all(deletionPromises);
-          return true;
+        });
+        await Promise.all(deletionPromises);
+        return true;
         } catch (error) {
-          console.error("Error deleting local accounts:", error);
-          throw new Error("Failed to delete local accounts");
+            console.error("Error deleting local accounts:", error);
+            throw new Error("Failed to delete local accounts");
         }
-      });
+    });
+
     //Firebase
     const {
         firebaseapp,
+        db: firestore,
         auth: firebaseAuth,
         analytics: firebaseAnalytics,
         googleProvider: GoogleAuthProvider,
         facebookProvider: FacebookAuthProvider,
     } = initializeFirebase();
 
-
-}
+          // Add a new document in collection "cities" with ID 'LA'
+          ipcMain.handle("firebase:get_last_login", async(event, email) => {
+            return await keytar.getPassword('noduro_accounts', email + "_time");
+        });
+    
+        ipcMain.handle("firebase:check_user_persist", async (event,email) => {
+            try{
+                const secret = await keytar.getPassword('noduro_accounts', email);
+                return [true, secret];
+            }
+            catch(error){
+                return [false, error];
+            }
+        });
+    
+        ipcMain.handle("firebase:email_sign_up", async (event, email, password, first_name, last_name, date_of_birth) => {
+            try{
+                const user_cred = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+                const userRef = await firestore.collection('users').doc(user_cred.user.uid).set({
+                    email_address: email,
+                    first_name: first_name,
+                    last_name: last_name,
+                    date_of_birth: date_of_birth,
+                })
+                await keytar.setPassword('noduro_accounts', email, password);
+                await keytar.setPassword('noduro_accounts', email + "_time", Date.now().toString());
+    
+                const user = JSON.stringify(user_cred.user);
+                return [true, user];
+            }
+            catch(error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+                return [false, error];
+            }
+        });
+        ipcMain.handle("firebase:email_sign_in", async (event, email, password,user_signing_in) => {
+            try {
+                await setPersistence(firebaseAuth, browserLocalPersistence);
+                const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+                keytar.setPassword('noduro_accounts', email, password);
+                if (user_signing_in){
+                await keytar.setPassword('noduro_accounts', email + "_time", Date.now().toString());
+                }
+                const user = JSON.stringify(userCredential.user);
+                return [true, user];
+            } catch (error) {
+                return [false, error];
+            }
+        });
+        ipcMain.handle("firebase:get_current_user", async (event) => {
+            return new Promise((resolve) => {
+                onAuthStateChanged(firebaseAuth, (user) => {
+                if (user) {
+                    const user_send = JSON.stringify(user);
+                    resolve([true, user_send]);
+                } else {
+                    resolve([false, "user_not_found"]);
+                }
+            });
+            });
+        });
+        ipcMain.handle("firebase:get_current_user_information", async (event,user) => {
+            const userRef = await firestore.collection('users').doc(user.uid).get();
+            if (userRef.exists) {
+                // var x = {...user, ...userRef.data()}
+                return [true, {...user, ...userRef.data()}];
+            }
+            else {
+                return [false, "user_firestore_data_not_found"];
+            }
+        });
+        ipcMain.handle("firebase:email_sign_out", async (event, email) => {
+            try{ 
+                signOut(firebaseAuth)
+                keytar.deletePassword('noduro_accounts', email);
+                return true;
+            }
+            catch(error){
+                return error;
+            }
+            
+        });
+    
+        ipcMain.on('start-python-script', async (event, arg) => {
+            pythonProcess = spawn('python3', [path.join(__dirname, 'python/run.py')])
+        });
+};
+    
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -174,6 +277,7 @@ app.on("open-url", (event, url) => {
 });
 
 app.on("window-all-closed", () => {
+    pythonProcess.kill();
     if (process.platform !== "darwin") {
         app.quit();
     }

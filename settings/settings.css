@@ -351,7 +351,7 @@ html, body {
 
 
 
-.toggle_switch_label{
+.toggle_switch_label, .dropdown{
   font-size: calc(0.75 * var(--toggle-button-scale));
   color: var(--label-color);
   padding-right: 1vw;

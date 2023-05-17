@@ -80,7 +80,7 @@
     color: var(--header_text);
     margin: 0 0 0 1rem;
     padding: 0;
-    transition: all cubic-bezier(0.62, 0.27, 0.43, 1) 0.4s;
+    transition: all cubic-bezier(0.62, 0.27, 0.43, 1) 1s;
 }
 .global_header .header_right {
     display: flex;
