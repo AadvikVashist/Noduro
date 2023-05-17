@@ -11,9 +11,9 @@ To clone a repository, get on [GitHub](github.com), navigate to the main page of
 1. Above the list of files, click  Code.
 2. Copy the URL for the repository.
 
-* To clone the repository using HTTPS, under "HTTPS", click  "__*.*__"
-* To clone the repository using an SSH key, including a certificate issued by your organization's SSH certificate authority, click SSH, then click .
-* To clone a repository using GitHub CLI, click GitHub CLI, then click .
+    * To clone the repository using HTTPS, under "HTTPS", click  "__*.*__"
+    * To clone the repository using an SSH key, including a certificate issued by your organization's SSH certificate authority, click SSH, then click .
+    * To clone a repository using GitHub CLI, click GitHub CLI, then click .
 
 4. Open the terminal if you haven't already
 5. Change the current working directory to the location where you want the cloned directory.
@@ -83,6 +83,41 @@ The commands should print the versions of Node.js and npm accordingly.
 npm init
 npm install --save-dev electron
 npm start
+```
+
+## Initialize virtual environment (venv)
+
+The commands should print the versions of Node.js and npm accordingly.
+Create a Virtual Environment: Start by creating a virtual environment specifically for your project. This allows you to have an isolated Python environment for your code. Open a terminal or command prompt in the root directory of your project and execute the following command:
+
+```bash
+python -m venv noduro_python
+```
+
+This command creates a new virtual environment named "noduro_python"
+
+#### Activate the Virtual Environment
+
+Activate the virtual environment to ensure that all subsequent Python commands and installations are performed within the isolated environment. Execute the appropriate command based on your operating system:
+
+##### For Windows:
+
+```bash
+.\noduro_python\Scripts\activate
+```
+
+##### For macOS/Linux:
+
+```bash
+source noduro_python/bin/activate
+```
+
+#### Install Dependencies
+
+Install the required Python packages and libraries for your project. Execute the necessary pip install commands to install the packages you need. For example:
+
+```bash
+pip install -r requirements.txt
 ```
 
 ## Usage

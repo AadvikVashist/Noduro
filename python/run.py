@@ -1,23 +1,17 @@
-
-from flask import Flask
-from flask_socketio import SocketIO, emit
 import cv2
 import base64
+# # import os, sys, subprocess
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # Change the parameter to the video source you want to capture from
 
-app = Flask(__name__)
-socketio = SocketIO(app)
-
-# Open the video capture device
-cap = cv2.VideoCapture(0)
-
-
-if __name__ == '__main__':
-    socketio.run(app)
-
-# Continuously capture frames and send them over the WebSocket connection
 while True:
+    # Read a frame from the VideoCapture
     ret, frame = cap.read()
-    _, jpeg_frame = cv2.imencode('.jpg', frame)
-    b64_frame = base64.b64encode(jpeg_frame).decode('utf-8')
-    socketio.emit('frame', b64_frame)
 
+    # Encode the frame to base64
+    _, buffer = cv2.imencode('.jpg', frame)
+    frame_data = base64.b64encode(buffer).decode('utf-8')
+    cv2.imshow('frame', frame)
+    cv2.waitKey(1)
+    # Print the encoded image data
+    print(frame_data, flush=True)
+    # Send the encoded frame over the WebSocket connection

@@ -1,3 +1,5 @@
 src/firebase/firebaseAdmin.json
 src/firebase/firebaseConfig.json
 src/settings/user_settings.json
+__pycache__/
+noduro_python/

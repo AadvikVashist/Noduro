@@ -12,24 +12,48 @@
 //   .catch(function() {
 //     alert('could not connect stream');
 //   });
-var cam = document.getElementById('camera');
-window.noduro_api.start_video()
-function update_camera(stream) {
-  cam.src = stream;
+
+var canvas = document.getElementById("camera");
+var ctx = canvas.getContext("2d");
+
+// Define image object
+var image = new Image();
+
+// Function to draw base64 image on canvas
+function drawImageOnCanvas(base64String) {
+    // Set image source to base64 string
+    image.src = "data:image/png;base64," + base64String;
+
+    // When the image is loaded, draw it on the canvas
+    image.onload = function() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      var aspectRatio = image.width / image.height;
+      var targetWidth = canvas.width;
+      var targetHeight = canvas.width / aspectRatio;
+
+      if (targetHeight > canvas.height) {
+          targetHeight = canvas.height;
+          targetWidth = canvas.height * aspectRatio;
+      }
+
+      var x = (canvas.width - targetWidth) / 2;
+      var y = (canvas.height - targetHeight) / 2;
+
+      ctx.drawImage(image, x, y, targetWidth, targetHeight);
+  };
 }
-// window.noduro_api.start()
-// const video = document.getElementById('camera');
+window.noduro.startPythonFile("./python/run.py")
+// var cam = document.getElementById('camera');
+window.addEventListener('message', (event) => {
+  if (event.data.type === 'imageData') {
+    const imageBase64 = event.data.payload;
+    drawImageOnCanvas(imageBase64);
 
-// // Function to receive video data from the main process
-// function onDataReceived(data) {
-//   console.log('received data');
-//   // Create a blob from the video data
-//   const blob = new Blob([data], { type: 'image/jpeg' });
+    // // Create a URL for the base64 image data
+    // const imageURL = `data:image/jpeg;base64,${imageBase64}`;
 
-//   // Create a URL for the blob
-//   const url = URL.createObjectURL(blob);
-
-//   // Set the URL as the source of the video element
-//   video.src = url;
-// }
-// window.noduro_api.start_video()
+    // // Use the image URL as the source for your HTML video element
+    // cam.src = imageURL;
+  }
+});

@@ -1,7 +1,10 @@
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer, process } = require("electron");
 let darkmodeVal = localStorage.getItem("darkmode");
 const fs = require("fs");
 const path = require("path");
+const spawn  = require('child_process').spawn;
+if (require('os').platform() == "win32") var pythonExecutable = "./noduro_python/Scripts/python.exe";
+else var pythonExecutable = "./noduro_python/bin/python";
 
 
 async function sign_in(email,password,user_signing_in){
@@ -144,7 +147,25 @@ contextBridge.exposeInMainWorld("noduro", {
         } catch (error) {
             console.error('Error saving object as JSON:', error);
         }
-    }
+    },
+    startPythonFile: (filePath) => {
+        const pythonProcess = spawn(pythonExecutable, [filePath]);
+        pythonProcess.stdout.on('data', (data) => {
+        // Handle output from the Python script if needed
+        const imageBase64 = data.toString().trim();
+        // Decode the base64 image data
+        window.postMessage({type: 'imageData', payload: imageBase64 }, '*');
+        
+        });
+        
+        pythonProcess.stderr.on('data', (data) => {
+        // Handle errors from the Python script if needed
+        });
+    },
+    sendVideoFrame: (frameData) => {
+        ipcRenderer.send('videoFrame', frameData);
+    },
+    
 });
 
 
@@ -177,23 +198,3 @@ for (var i in files) {
 }
 localStorage.setItem("files", JSON.stringify(files));
 localStorage.setItem("lessons", JSON.stringify(lessons));
-
-
-contextBridge.exposeInMainWorld("noduro_api", {
-    start_video: (args, callback) => {
-        ipcRenderer.send("start-python-script", args);
-        const net = require('net');
-
-        const client = net.connect({ port: 5000 }, () => {
-            console.log('connected to server!');
-        });
-
-        client.on('data', (data) => {
-            update_camera(`data:video/mp4;base64,${data.toString('base64')}`);
-        });
-
-        client.on('end', () => {
-            console.log('disconnected from server');
-        });
-    }
-});
