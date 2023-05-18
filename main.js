@@ -82,7 +82,8 @@ const createWindow = () => {
             preload: path.join(__dirname, "preload.js"),
             contextIsolation: true,
             nativeWindowOpen: true,
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: false // Disable remote module
         },
         zoomToPageWidth: true,
         show: false,
@@ -230,7 +231,39 @@ const createWindow = () => {
         ipcMain.on('start-python-script', async (event, arg) => {
             pythonProcess = spawn('python3', [path.join(__dirname, 'python/run.py')])
         });
-};
+    // Handle control messages from the renderer process
+    ipcMain.on('control-message', (_, message) => {
+        // Process control messages as needed
+        if (message === 'start') {
+        startPythonProcess();
+        } else if (message === 'stop') {
+        stopPythonProcess();
+        }
+    });
+
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+        stopPythonProcess();
+    });
+    }
+
+    function startPythonProcess() {
+    // Spawn the Python process with your script and arguments
+    pythonProcess = spawn('python', ['path/to/your/python_script.py', 'arg1', 'arg2']);
+
+    // Handle the stdout data (video stream frames) from the Python process
+    pythonProcess.stdout.on('data', (data) => {
+        mainWindow.webContents.send('video-frame', data);
+    });
+    }
+
+    function stopPythonProcess() {
+    if (pythonProcess) {
+        // Kill the Python process if running
+        pythonProcess.kill();
+        pythonProcess = null;
+    }
+}
     
 const gotTheLock = app.requestSingleInstanceLock();
 
